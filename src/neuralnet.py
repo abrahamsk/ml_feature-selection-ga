@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# coding=utf-8
+
 # Katie Abrahams
 # abrahake@pdx.edu
 # ML Independent Study
@@ -5,6 +8,7 @@
 
 import numpy as np
 import sklearn.neural_network
+from genetic_algorithm import *
 
 # 'Neural network in 11 lines of python', iamtrask
 # iamtrask.github.io/2015/07/12/basic-python-network/
