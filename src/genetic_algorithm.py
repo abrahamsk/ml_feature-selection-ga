@@ -7,7 +7,7 @@
 # Winter 2016
 
 import deap
-# from deap import creator, base, tools, algorithms
+from deap import creator, base, tools, algorithms
 import random
 
 #########################
@@ -68,7 +68,8 @@ toolbox.register("evaluate", evaluate)
 # 1) It evaluates the individuals with an invalid fitness.
 # 2) It enters the generational loop where the selection procedure is applied to
 # entirely replace the parental population. The 1:1 replacement ratio of this algorithm
-# requires the selection procedure to be stochastic and to select multiple times the same individual, for example, selTournament() and selRoulette().
+# requires the selection procedure to be stochastic and to select multiple times the same
+# individual, for example, selTournament() and selRoulette().
 # 3) It applies the varAnd() function to produce the next generation population.
 # 4) It evaluates the new individuals and compute the statistics on this population.
 # 5) When ngen generations are done, the algorithm returns a tuple with the final
@@ -99,3 +100,53 @@ Returns:
 The final population and a Logbook with the statistics of the evolution.
 """
 # deap.algorithms.eaSimple(population, toolbox, cxpb, mutpb, ngen)
+
+# complete generational algorithm:
+
+def gen_algorithm():
+    pop = toolbox.population(n=50)
+    print "pop before changes: ", len(pop)
+    CXPB, MUTPB, NGEN = 0.5, 0.2, 40
+
+    # Evaluate the entire population
+    fitnesses = map(toolbox.evaluate, pop)
+    for ind, fit in zip(pop, fitnesses):
+        ind.fitness.values = fit
+
+    for g in range(NGEN):
+        # Select the next generation individuals
+        offspring = toolbox.select(pop, len(pop))
+        # Clone the selected individuals
+        offspring = map(toolbox.clone, offspring)
+
+        # Apply crossover and mutation on the offspring
+        for child1, child2 in zip(offspring[::2], offspring[1::2]):
+            if random.random() < CXPB:
+                toolbox.mate(child1, child2)
+                del child1.fitness.values
+                del child2.fitness.values
+
+        for mutant in offspring:
+            if random.random() < MUTPB:
+                toolbox.mutate(mutant)
+                del mutant.fitness.values
+
+        # Evaluate the individuals with an invalid fitness
+        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+        fitnesses = map(toolbox.evaluate, invalid_ind)
+        for ind, fit in zip(invalid_ind, fitnesses):
+            ind.fitness.values = fit
+
+        # The population is entirely replaced by the offspring
+        pop[:] = offspring
+
+    return pop
+
+###############################################################################
+
+def main():
+    pop = gen_algorithm()
+    print "pop after function exit: ", len(pop)  # 50
+
+if __name__ == "__main__":
+    main()
