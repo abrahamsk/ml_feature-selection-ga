@@ -105,7 +105,7 @@ The final population and a Logbook with the statistics of the evolution.
 
 def gen_algorithm():
     pop = toolbox.population(n=50)
-    print "pop before changes: ", len(pop)
+    print "pop before changes: ", len(pop)  # len 50 with 10 items at each index
     CXPB, MUTPB, NGEN = 0.5, 0.2, 40
 
     # Evaluate the entire population
