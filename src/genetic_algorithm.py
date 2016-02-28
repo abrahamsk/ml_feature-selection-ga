@@ -103,10 +103,16 @@ The final population and a Logbook with the statistics of the evolution.
 
 # complete generational algorithm:
 
-def gen_algorithm():
-    pop = toolbox.population(n=50)
+def gen_algorithm(pop_size):
+    """
+    Genetic algorithm for feature subset selection
+    :arg pop_size: population size
+    :return:
+    """
+    pop = toolbox.population(n=pop_size)
     print "pop before changes: ", len(pop)  # len 50 with 10 items at each index
-    CXPB, MUTPB, NGEN = 0.5, 0.2, 40
+    # use genetic algorithm parameters from paper
+    CXPB, MUTPB, NGEN = 0.6, 0.001, 20
 
     # Evaluate the entire population
     fitnesses = map(toolbox.evaluate, pop)
@@ -146,7 +152,7 @@ def gen_algorithm():
 
 def main():
     pop = gen_algorithm()
-    print "pop after function exit: ", len(pop)  # 50
+    # print "pop after function exit: ", len(pop)
 
 if __name__ == "__main__":
     main()
