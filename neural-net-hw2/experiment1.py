@@ -202,7 +202,8 @@ def back_propagation(hidden_activations, output_activations, target, row):
 # 	3. Forward propagate the activations times weights from the hidden layer to the output layer.
 # 	4. At each output unit, determine the error E.
 # 	5. Run the back-propagation algorithm to update all weights in the network.
-def train(num_epochs):
+#### Pass in GA population
+def train(num_epochs, pop):
     """
     train() calls forward_propagation() and back_propagation()
     Run training examples through neural net to train for letter recognition
@@ -239,7 +240,19 @@ def train(num_epochs):
         target_row = 0 # count keeps track of which index of target to pass in
         for row in X[0:50]:
 
+            #
+            #
+            #
             # Select feature subset from genetic algorithm to pass to forward prop #
+            #
+            #
+            #
+            print pop
+            # for i in pop:
+            #     for j in pop[i]:
+            #         print j
+
+
 
             hidden_layer = [] # list to hold hidden layer, to pass to back_propagation once it's filled
             hidden_layer, Y = forward_propagation(row)
@@ -409,7 +422,17 @@ def main():
     # lists for training and testing accuracies over multiple epochs
     training_acc_list = []
     testing_acc_list = []
-    training_acc_list, testing_acc_list = train(epochs)
+
+    #
+    #
+    # Genetic algorithm population
+    # 17 features in row of X (neural net input)
+    # use 17 for number of population in GA
+    #
+    #
+    pop = gen_algorithm(1)
+
+    training_acc_list, testing_acc_list = train(epochs, pop)
     # plot results of accuracy testing
     # plot_results(training_acc_list, testing_acc_list)
 
