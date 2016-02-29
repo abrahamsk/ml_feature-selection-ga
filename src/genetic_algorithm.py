@@ -25,7 +25,7 @@ creator.create("Individual", list, fitness=creator.FitnessMin)
 # Init:
 # Once the types are created, fill them with sometimes random values
 # initialize populations from individuals that are themselves initialized with random float numbers
-IND_SIZE = 10
+IND_SIZE = 1
 
 toolbox = base.Toolbox()
 toolbox.register("attribute", random.random)
