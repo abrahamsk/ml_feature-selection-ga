@@ -110,7 +110,7 @@ def gen_algorithm(pop_size):
     :return:
     """
     pop = toolbox.population(n=pop_size)
-    print "pop before changes: ", len(pop)  # len 50 with 10 items at each index
+    # print "pop before changes: ", len(pop)  # len pop_size with 10 items at each index
     # use genetic algorithm parameters from paper
     CXPB, MUTPB, NGEN = 0.6, 0.001, 20
 

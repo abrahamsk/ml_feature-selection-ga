@@ -26,12 +26,15 @@ def nonlin(x,deriv=False):
 
 def main():
     # input dataset
-    X = np.array([  [0,0,1],
+    # Input dataset matrix where each row is a training example
+    X = np.array([  [2,5,6],
                     [0,1,1],
                     [1,0,1],
                     [1,1,1] ])
+    print X
 
     # output dataset
+    # Output dataset matrix where each row is a training example
     y = np.array([[0,0,1,1]]).T
 
     # seed random numbers to make calculation
@@ -39,6 +42,7 @@ def main():
     np.random.seed(1)
 
     # initialize weights randomly with mean 0
+    # First layer of weights, Synapse 0, connecting l0 to l1
     syn0 = 2*np.random.random((3,1)) - 1
 
     # start with 10 iterations to test
@@ -46,14 +50,15 @@ def main():
     for iter in xrange(10):
 
         # forward propagation
+        # l0: First Layer of the Network, specified by the input data
         l0 = X
-        # l1 is the hidden layer
+        # l1: Second Layer of the Network, aka the hidden layer
         l1 = nonlin(np.dot(l0,syn0))
         # l1 shape is (4,1)
         # Genetic algorithm population
         pop = gen_algorithm(len(l1))
         # use genetic algorithm to select feature subset
-        print "population:", pop
+        # print "population:", pop
 
         # how much did we miss?
         l1_error = y - l1
