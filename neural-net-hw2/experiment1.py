@@ -239,22 +239,29 @@ def train(num_epochs, pop):
         # but already processed through the sigmoid function
 
         # iterate through data matrix to operate on individual training instances
+
+        ######################################################################
+        # GA Feature
+        # row for use as neural net input
+        # selected by GA
+        ######################################################################
         target_row = 0 # count keeps track of which index of target to pass in
         for row in X[0:50]:
 
-            #
-            #
-            #
-            # Select feature subset from genetic algorithm to pass to forward prop #
-            #
-            #
-            #
+            ######################################################################
+            # GA Feature
+            # Select feature subset from genetic algorithm to pass to forward prop
+            # If the index in GA pop is 1, include that feature in training
+            ga_row = []
+            ######################################################################
+            # print pop
+            for i in xrange(len(pop)):
+                for j in xrange(len(pop[i])):
+                    if pop[i][j] == 1:
+                        ga_row.append(row[j])
+            # print len(ga_row)
 
-            # for i in xrange(len(pop)):
-            #     for j in pop[i]:
-            #         print j
-
-
+            # pass in ga_row to forward_prop instead of row
 
             hidden_layer = [] # list to hold hidden layer, to pass to back_propagation once it's filled
             hidden_layer, Y = forward_propagation(row)
@@ -425,14 +432,12 @@ def main():
     training_acc_list = []
     testing_acc_list = []
 
-    #
-    #
-    # Genetic algorithm population
+    ######################################################################
+    # GA Feature
+    # Population
     # 17 features in row of X (neural net input)
-    # use 17 for number of population in GA
-    #
-    #
-    # population will be dimension 1x17
+    # use 17 for number of population in GA: pop will be dim 1x17
+    ######################################################################
     pop = gen_algorithm(1)
 
     training_acc_list, testing_acc_list = train(epochs, pop)

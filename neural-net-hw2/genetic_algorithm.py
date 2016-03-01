@@ -17,10 +17,10 @@ import random
 # Sourced from deap.readthedocs.org/en/1.0.x/overview.html
 # first thing to do is make appropriate type for your problem.
 # DEAP enables you to build your own types
-# single objective minimizing fitness named FitnessMin:
-creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+# single objective maximizing fitness named FitnessMax:
+creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 # Individual class derived from a list with a fitness attribute set to the just created fitness
-creator.create("Individual", list, fitness=creator.FitnessMin)
+creator.create("Individual", list, fitness=creator.FitnessMax)
 
 # Init:
 # Once the types are created, fill them with sometimes random values
