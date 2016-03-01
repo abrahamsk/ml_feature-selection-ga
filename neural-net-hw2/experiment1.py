@@ -7,6 +7,8 @@
 # Katie Abrahams, abrahake@pdx.edu
 # 1/28/16
 
+#noinspection PyFromFutureImport
+
 
 from __future__ import division # want float and not int division
 # import data structures, variables, and neural net from neural_net
@@ -247,8 +249,8 @@ def train(num_epochs, pop):
             #
             #
             #
-            print pop
-            # for i in pop:
+
+            # for i in xrange(len(pop)):
             #     for j in pop[i]:
             #         print j
 
@@ -430,6 +432,7 @@ def main():
     # use 17 for number of population in GA
     #
     #
+    # population will be dimension 1x17
     pop = gen_algorithm(1)
 
     training_acc_list, testing_acc_list = train(epochs, pop)

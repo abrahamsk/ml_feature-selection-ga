@@ -15,6 +15,10 @@ from input import letters_list_training, letters_list_testing
 from sklearn import preprocessing
 import random
 
+import warnings
+warnings.simplefilter(action = "ignore", category = FutureWarning)
+warnings.simplefilter(action = "ignore", category = UserWarning)
+
 # Neural network to recognize letters
 # after training with the UCI machine learning repository.
 # Network has 16 inputs (mapping to the 16 attributes of the letters in the data set)

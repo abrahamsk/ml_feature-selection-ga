@@ -28,7 +28,7 @@ creator.create("Individual", list, fitness=creator.FitnessMin)
 IND_SIZE = 17
 
 toolbox = base.Toolbox()
-toolbox.register("attribute", random.random)
+toolbox.register("attribute", random.randint, 0, 1) # used to create a vector of 0s and 1s
 toolbox.register("individual", tools.initRepeat, creator.Individual,
                  toolbox.attribute, n=IND_SIZE)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
