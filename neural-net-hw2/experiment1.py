@@ -2,13 +2,9 @@
 # -*- coding: utf-8 -*-
 ##  utf-8 for non-ASCII chars
 
-# Machine Learning 445
-# HW 2: Neural Networks
-# Katie Abrahams, abrahake@pdx.edu
-# 1/28/16
+# neural net code modified from ML HW 2
 
-#noinspection PyFromFutureImport
-
+# noinspection PyFromFutureImport
 
 from __future__ import division # want float and not int division
 # import data structures, variables, and neural net from neural_net
@@ -240,11 +236,11 @@ def train(num_epochs, pop):
 
         # iterate through data matrix to operate on individual training instances
 
-        ######################################################################
+        ##################################
         # GA Feature
         # row for use as neural net input
         # selected by GA
-        ######################################################################
+        ##################################
         target_row = 0 # count keeps track of which index of target to pass in
         for row in X[0:50]:
 
@@ -259,16 +255,21 @@ def train(num_epochs, pop):
                 for j in xrange(len(pop[i])):
                     if pop[i][j] == 1:
                         ga_row.append(row[j])
-            # print len(ga_row)
+            # print "len of ga_row", len(ga_row)  # variable depending on number of 1s in pop
 
             # pass in ga_row to forward_prop instead of row
 
             hidden_layer = [] # list to hold hidden layer, to pass to back_propagation once it's filled
-            hidden_layer, Y = forward_propagation(row)
+
+            #############################
+            # Use GA row instead of 'row'
+            #############################
+
+            hidden_layer, Y = forward_propagation(ga_row)
             # use back propagation to compute error and adjust weights
             # pass in activations of hidden and output layer and target letter corresponding to the row
             # that is currently being passed through the neural net
-            back_propagation(hidden_layer, Y, X_targets[target_row], row)
+            back_propagation(hidden_layer, Y, X_targets[target_row], ga_row)
 
             # move to next row of input data to use new target
             target_row += 1
@@ -424,7 +425,7 @@ ltr_to_index = dict(zip(string.ascii_uppercase, range(0,26)))
 ######
 # main
 ######
-epochs = 5
+epochs = 1
 def main():
     #train the neural net for <epochs> number of epochs
     # using forward and back propagation
@@ -439,6 +440,7 @@ def main():
     # use 17 for number of population in GA: pop will be dim 1x17
     ######################################################################
     pop = gen_algorithm(1)
+    print "population:", pop
 
     training_acc_list, testing_acc_list = train(epochs, pop)
     # plot results of accuracy testing

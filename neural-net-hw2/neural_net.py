@@ -1,11 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-##  utf-8 for non-ASCII chars
+# coding=utf-8
 
-# Machine Learning 445
-# HW 2: Neural Networks
-# Katie Abrahams, abrahake@pdx.edu
-# 1/28/16
+# neural net code modified from ML HW 2
 
 import sys
 import math
