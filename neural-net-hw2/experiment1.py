@@ -433,16 +433,11 @@ def main():
     training_acc_list = []
     testing_acc_list = []
 
-    ######################################################################
-    # GA Feature
-    # Population
-    # 17 features in row of X (neural net input)
-    # use 17 for number of population in GA: pop will be dim 1x17
-    ######################################################################
-    pop = gen_algorithm(1)
-    print "population:", pop
+    #############################################
+    # GA population calculated in neural net file
+    #############################################
 
-    training_acc_list, testing_acc_list = train(epochs, pop)
+    training_acc_list, testing_acc_list = train(epochs, ga_pop)
     # plot results of accuracy testing
     # plot_results(training_acc_list, testing_acc_list)
 

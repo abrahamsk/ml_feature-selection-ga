@@ -3,13 +3,13 @@
 
 # neural net code modified from ML HW 2
 
-import sys
-import math
-import numpy as np
+import sys, math, random, numpy as np
+
 from input import letters_list_training, letters_list_testing
 # preprocessing to scale training data
 from sklearn import preprocessing
-import random
+from genetic_algorithm import *
+
 
 import warnings
 warnings.simplefilter(action = "ignore", category = FutureWarning)
@@ -94,6 +94,29 @@ def sigmoid(z, derivative):
 # data structures
 #################
 
+##############################################################
+# GA Feature
+# Population
+# 17 features in row of X (neural net input)
+# use 17 for number of population in GA: pop will be dim 1x17
+#############################################################
+ga_pop = gen_algorithm(1)
+print "population:", ga_pop
+
+######################################################################
+# GA Feature
+# Select feature subset from genetic algorithm to pass to forward prop
+# If the index in GA pop is 1, include that feature in training
+ga_row = []
+######################################################################
+num_features = 0
+for i in xrange(len(ga_pop)):
+    for j in xrange(len(ga_pop[i])):
+        if ga_pop[i][j] == 1:
+            # number of 1s in ga_pop determines how many features to use
+            num_features +=1
+            # print "len of ga_row", len(ga_row)  # variable depending on number of 1s in pop
+
 ######################################################################################################
 
 #### Training data as a 10000x17 matrix seeded with letter attributes ####
@@ -147,7 +170,7 @@ X_test = np.concatenate((X_test_scaled, test_bias_input), axis=1)
 # Weight matrices have the same number of columns as units in the previous layer
 # and the same number of rows as units in the next layer
 # n is the number of hidden units
-input_to_hidden_weights = np.random.uniform(low= -.25, high= .25, size=(n, 17))
+input_to_hidden_weights = np.random.uniform(low= -.25, high= .25, size=(n, num_features))
 # print "input to hidden weights shape", input_to_hidden_weights.shape #4x17
 
 #### Weights from hidden layer to output layer ####
