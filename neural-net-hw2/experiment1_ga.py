@@ -271,7 +271,7 @@ def train(num_epochs, pop):
             # pass in ga_row to forward_prop instead of row
 
             # build neural net input using rows with only a limited number of features
-
+            ga_X.append(ga_row)
 
             hidden_layer = [] # list to hold hidden layer, to pass to back_propagation once it's filled
 
@@ -289,6 +289,9 @@ def train(num_epochs, pop):
 
         # increment epoch after all input data is processed
         epoch_increment += 1
+
+        # check integrity of total input for GA neural net input
+        print "ga X:", ga_X
 
         # After each epoch, calculate the network's accuracy
         # on the training set and the test set
