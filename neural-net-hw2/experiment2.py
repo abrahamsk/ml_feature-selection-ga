@@ -11,7 +11,7 @@
 from __future__ import division # want float and not int division
 # import data structures, variables, and neural net from neural_net
 # data structures in the global scope
-from neural_net import *
+from neural_net_ga import *
 import string
 import matplotlib.pyplot as plt
 

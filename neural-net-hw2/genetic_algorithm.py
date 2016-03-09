@@ -9,7 +9,7 @@
 import deap
 from deap import creator, base, tools, algorithms
 import random
-from neural_net import *
+from neural_net_ga import *
 
 #########################
 # Genetic algorithm setup
@@ -154,7 +154,7 @@ def gen_algorithm(pop_size):
 def main():
     test = 5
     pop = gen_algorithm(test)
-    # print "pop after function exit: ", len(pop)
+    print "test population len after function exit: ", len(pop)
 
 if __name__ == "__main__":
     main()

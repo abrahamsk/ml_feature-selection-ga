@@ -9,7 +9,7 @@
 from __future__ import division # want float and not int division
 # import data structures, variables, and neural net from neural_net
 # data structures in the global scope
-from neural_net import *
+from neural_net_ga import *
 import string
 import matplotlib.pyplot as plt
 import timing
@@ -32,10 +32,17 @@ def forward_propagation(row):
     :param row of data matrix:
     :return output of neural net:
     """
+    # check row shape
+    print "row shape", len(row)
 
     # transpose row vector for matrix multiplication
     X_row = np.mat(row)
     X_col = X_row.transpose()
+
+    hidden_weights_shape = input_to_hidden_weights.shape
+    x_col_shape = X_col.shape
+    # print "input to hidden weights shape", hidden_weights_shape
+    # print "X_col shape", x_col_shape
 
     # forward propagation
     # initial run of data, use sigmoid activation function
@@ -241,8 +248,12 @@ def train(num_epochs, pop):
         # row for use as neural net input
         # selected by GA
         ##################################
-        target_row = 0 # count keeps track of which index of target to pass in
-        for row in X[0:50]:
+        # input to neural net with GA-selected features in each row only
+        ga_X = []
+        # count keeps track of which index of target to pass in
+        target_row = 0
+        # iterate over input data
+        for row in X[0:5]:
 
             ######################################################################
             # GA Feature
@@ -254,17 +265,19 @@ def train(num_epochs, pop):
             for i in xrange(len(pop)):
                 for j in xrange(len(pop[i])):
                     if pop[i][j] == 1:
-                        ga_row.append(row[j])
-            # print "len of ga_row", len(ga_row)  # variable depending on number of 1s in pop
-
+                        ga_row.append(row[j]) # build feature subset
+            print "len of ga_row", len(ga_row)  # variable depending on number of 1s in pop
+            # print "ga row", ga_row
             # pass in ga_row to forward_prop instead of row
+
+            # build neural net input using rows with only a limited number of features
+
 
             hidden_layer = [] # list to hold hidden layer, to pass to back_propagation once it's filled
 
             #############################
             # Use GA row instead of 'row'
             #############################
-
             hidden_layer, Y = forward_propagation(ga_row)
             # use back propagation to compute error and adjust weights
             # pass in activations of hidden and output layer and target letter corresponding to the row
@@ -279,7 +292,7 @@ def train(num_epochs, pop):
 
         # After each epoch, calculate the network's accuracy
         # on the training set and the test set
-        training_accuracy, testing_accuracy = calculate_accuracy(X[0:50], X_test[0:50], epoch_increment)
+        training_accuracy, testing_accuracy = calculate_accuracy(ga_X, X[0:5], X_test[0:5], epoch_increment)
         training_acc_list.append(training_accuracy)
         testing_acc_list.append(testing_accuracy)
         # print "\ntraining list in train", training_acc_list
@@ -291,11 +304,11 @@ def train(num_epochs, pop):
 
 ################################################################################################
 
-def calculate_accuracy(training_data, test_data, epoch_num):
+def calculate_accuracy(ga_training_data, training_data, test_data, epoch_num):
     """
     After each epoch, calculate the network's accuracy
     on the training set and the test set
-    :param training_data, test_data, epoch_num
+    :param ga_training_data, training_data, test_data, epoch_num
     :return training_accuracy, testing_accuracy:
     """
     # counters for neural net votes
@@ -309,7 +322,8 @@ def calculate_accuracy(training_data, test_data, epoch_num):
     training_letter_vote = []
     training_letter_actual = []
     target_row = 0
-    for row in training_data:
+
+    for row in ga_training_data:
         hidden_layer, Y_train = forward_propagation(row)
         training_predictions.append(Y_train)
 
