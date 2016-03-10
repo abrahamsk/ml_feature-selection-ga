@@ -15,7 +15,8 @@ from neural_net_ga import *
 # Program parameters
 ####################
 
-# use genetic algorithm parameters from paper
+# use genetic algorithm parameters specified in
+# Feature Subset Selection Using a Genetic Algorithm (Yang, Honavar)
 # for use in genetic_algorithm() and mutate()
 # cxpb – The probability of mating two individuals.
 # mutpb – The probability of mutating an individual.
@@ -62,9 +63,9 @@ toolbox.register("evaluate", evaluate)
 
 ###############################################################################
 
-############
-# Algorithm
-############
+##############
+# GA algorithm
+##############
 
 # use one of the algorithms from the algorithms module
 # The algorithms module is intended to contain some specific algorithms
@@ -98,7 +99,6 @@ toolbox.register("evaluate", evaluate)
 
 """
 Parameters:
-
     population – A list of individuals.
     toolbox – A Toolbox that contains the evolution operators.
     cxpb – The probability of mating two individuals.
@@ -109,10 +109,17 @@ Parameters:
     verbose – Whether or not to log the statistics.
 
 Returns:
-
 The final population and a Logbook with the statistics of the evolution.
 """
-# separated out initial population generation from the rest of the deap generatic algorithm
+
+################
+# Simple example
+################
+# This algorithm reproduce the simplest evolutionary algorithm
+# as presented in ch7 of Evolutionary Computation 1: Basic Algorithms and Operators (Back, 2000)
+# deap.algorithms.eaSimple(population, toolbox, cxpb, mutpb, ngen)
+
+# separate out initial population generation from the rest of the deap genetic algorithm
 def initial_ga_population(pop_size):
     """
     Genetic algorithm for feature subset selection
@@ -122,10 +129,11 @@ def initial_ga_population(pop_size):
     pop = toolbox.population(n=pop_size)
     return pop
 
-# deap.algorithms.eaSimple(population, toolbox, cxpb, mutpb, ngen)
-
-
-# complete generational algorithm (sans initial population generation)
+##########################
+# More verbose alternative
+##########################
+# complete generational algorithm sans initial population generation
+# see initial_ga_population(pop_size) above for initial pop generation
 def gen_algorithm(pop):
     """
     Genetic algorithm for feature subset selection
@@ -173,6 +181,9 @@ def gen_algorithm(pop):
 
 ###############################################################################
 
+##########################
+# Non-library GA functions
+##########################
 
 def genetic_cross(gen_pop_one, gen_pop_two):
     """
@@ -214,7 +225,7 @@ def mutate(gene):
 
 def main():
     test = 5
-    population = gen_algorithm(test)
+    population = initial_ga_population(test)
     print "test population len after function exit: ", len(population)
 
 if __name__ == "__main__":

@@ -119,6 +119,9 @@ ga_population_deux = initial_ga_population(1)
 ga_population_deux[-1][-1] = 1
 print "population two after bias input mod:", ga_population_deux
 
+#####################################################
+# Using non-deap functions for crossover and mutation
+#####################################################
 # randomly combine from the two lists
 ga_population_crossed = genetic_cross(ga_population, ga_population_deux)
 # overwrite last digit for neural net bias
@@ -130,6 +133,16 @@ ga_population_mutated = mutate(ga_population_crossed)
 # overwrite last digit for neural net bias
 ga_population_mutated[-1][-1] = 1
 print "Mutated:", ga_population_mutated
+
+############################################
+# Alternative:
+# Using deap to evaluate, crossover, mutate,
+# and replace population with offspring
+############################################
+better_faster_stronger = gen_algorithm(ga_population)
+# overwrite last digit for neural net bias
+better_faster_stronger[-1][-1] = 1
+print "We have the technology...", better_faster_stronger
 
 ######################################################################
 # GA Feature

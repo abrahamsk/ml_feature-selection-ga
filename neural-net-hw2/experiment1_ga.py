@@ -34,7 +34,7 @@ epochs = 5
 ###############
 def forward_propagation(row):
     """
-    Function called in train()
+    Function called in train_and_test()
     Forward propagate the input through the neural network
     during neural network training
     Does not include error computation
@@ -82,7 +82,7 @@ def forward_propagation(row):
 
 def back_propagation(hidden_activations, output_activations, target, row):
     """
-    Function called in train()
+    Function called in train_and_test()
     The the back-propagation algorithm is used
     during training to update all weights in the network.
     Pass in activation of output layer and
@@ -220,9 +220,9 @@ def back_propagation(hidden_activations, output_activations, target, row):
 # 	4. At each output unit, determine the error E.
 # 	5. Run the back-propagation algorithm to update all weights in the network.
 #### Pass in GA population
-def train(num_epochs, ga_pop):
+def train_and_test(num_epochs, ga_pop):
     """
-    train() calls forward_propagation() and back_propagation()
+    train_and_test() calls forward_propagation() and back_propagation()
     Run training examples through neural net to train for letter recognition
     Classification with a two-layer neural network (Forward propagation)
     For two-layer networks (one hidden layer):
@@ -326,6 +326,9 @@ def train(num_epochs, ga_pop):
         # build neural net test input using rows with only a limited number of features
         ga_X_test.append(ga_test_row)
 
+        ###############
+        # Test accuracy
+        ###############
         # After each epoch, calculate the network's accuracy
         # on the training set and the test set
         training_accuracy, testing_accuracy = calculate_accuracy(ga_X, ga_X_test, X[0:num_rows], X_test[0:num_rows], epoch_increment)
@@ -489,10 +492,17 @@ def main():
     #############################################
     # GA population calculated in neural net file
     #############################################
-
-    training_acc_list, testing_acc_list = train(epochs, ga_population)
+    print "*******************"
+    print "Running neural net training & test with initial GA population..."
+    training_acc_list, testing_acc_list = train_and_test(epochs, ga_population)
     # plot results of accuracy testing
     # plot_results(training_acc_list, testing_acc_list)
+    print "Initial run done."
+    print "*******************"
+    print "Running nn training & test with shiny new GA population..."
+    training_acc_list_deux, testing_acc_list_deux = train_and_test(epochs, better_faster_stronger)
+    print "Second round done."
+    print "*******************"
 
 if __name__ == "__main__":
     main()
