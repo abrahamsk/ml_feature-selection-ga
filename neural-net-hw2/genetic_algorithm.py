@@ -153,8 +153,8 @@ def gen_algorithm(pop_size):
 
 def main():
     test = 5
-    pop = gen_algorithm(test)
-    print "test population len after function exit: ", len(pop)
+    population = gen_algorithm(test)
+    print "test population len after function exit: ", len(population)
 
 if __name__ == "__main__":
     main()

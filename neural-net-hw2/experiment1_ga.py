@@ -33,7 +33,7 @@ def forward_propagation(row):
     :return output of neural net:
     """
     # check row shape
-    print "row shape", len(row)
+    print "- row shape, forward prop:", len(row)
 
     # transpose row vector for matrix multiplication
     X_row = np.mat(row)
@@ -196,7 +196,6 @@ def back_propagation(hidden_activations, output_activations, target, row):
     # if(no_change_input_to_hidden_weight > 0):
     #     print "\nnum of weights unchanged input to hidden", no_change_input_to_hidden_weight
 
-
 ################################################################################################
 
 # Training a multi-layer neural network
@@ -208,7 +207,7 @@ def back_propagation(hidden_activations, output_activations, target, row):
 # 	4. At each output unit, determine the error E.
 # 	5. Run the back-propagation algorithm to update all weights in the network.
 #### Pass in GA population
-def train(num_epochs, pop):
+def train(num_epochs, ga_pop):
     """
     train() calls forward_propagation() and back_propagation()
     Run training examples through neural net to train for letter recognition
@@ -220,6 +219,8 @@ def train(num_epochs, pop):
          2. Forward propagate the activations times the weights to each node in the hidden layer.
          3. Forward propagate the activations times weights from the hidden layer to the output layer.
          4. Interpret the output layer as a classification.
+    :param num_epochs:
+    :param ga_pop:
     """
     epoch_increment = 0
 
@@ -250,31 +251,31 @@ def train(num_epochs, pop):
         ##################################
         # input to neural net with GA-selected features in each row only
         ga_X = []
+        ga_X_test = []
         # count keeps track of which index of target to pass in
         target_row = 0
         # iterate over input data
         for row in X[0:5]:
-
+            print "\nTRAIN another row of X..."
             ######################################################################
             # GA Feature
             # Select feature subset from genetic algorithm to pass to forward prop
             # If the index in GA pop is 1, include that feature in training
-            ga_row = []
             ######################################################################
-            # print pop
-            for i in xrange(len(pop)):
-                for j in xrange(len(pop[i])):
-                    if pop[i][j] == 1:
+            ga_row = [] # build training data
+            for i in xrange(len(ga_pop)):
+                for j in xrange(len(ga_pop[i])):
+                    if ga_pop[i][j] == 1:
                         ga_row.append(row[j]) # build feature subset
-            print "len of ga_row", len(ga_row)  # variable depending on number of 1s in pop
+            print "len of ga_row, training:", len(ga_row)  # variable depending on number of 1s in pop
             # print "ga row", ga_row
             # pass in ga_row to forward_prop instead of row
 
             # build neural net input using rows with only a limited number of features
             ga_X.append(ga_row)
 
-            hidden_layer = [] # list to hold hidden layer, to pass to back_propagation once it's filled
 
+            hidden_layer = [] # list to hold hidden layer, to pass to back_propagation once it's filled
             #############################
             # Use GA row instead of 'row'
             #############################
@@ -291,11 +292,31 @@ def train(num_epochs, pop):
         epoch_increment += 1
 
         # check integrity of total input for GA neural net input
-        print "ga X:", ga_X
+        # print "ga X:", ga_X
+
+        print "Done with training loop!\n"
+
+        ############################################################
+        # Build test data using features selected from GA population
+        # used to test accuracy of training
+        ############################################################
+        ga_test_row = [] # build testing data
+        ga_test_pop = ga_pop[:]
+        # print ga_test_pop
+        print "TEST Building test set..."
+        # for row in X_test[0:5]:
+        for i in xrange(len(ga_test_pop)):
+            for j in xrange(len(ga_test_pop[i])):
+                if ga_test_pop[i][j] == 1:
+                    ga_test_row.append(X_test[i][j])  # build feature subset
+        print "TEST len of ga_test_row", len(ga_test_row)  # variable depending on number of 1s in pop
+        # print "ga row", ga_test_row
+        # build neural net test input using rows with only a limited number of features
+        ga_X_test.append(ga_test_row)
 
         # After each epoch, calculate the network's accuracy
         # on the training set and the test set
-        training_accuracy, testing_accuracy = calculate_accuracy(ga_X, X[0:5], X_test[0:5], epoch_increment)
+        training_accuracy, testing_accuracy = calculate_accuracy(ga_X, ga_X_test, X[0:5], X_test[0:5], epoch_increment)
         training_acc_list.append(training_accuracy)
         testing_acc_list.append(testing_accuracy)
         # print "\ntraining list in train", training_acc_list
@@ -307,11 +328,11 @@ def train(num_epochs, pop):
 
 ################################################################################################
 
-def calculate_accuracy(ga_training_data, training_data, test_data, epoch_num):
+def calculate_accuracy(ga_training_data, ga_test_data, training_data, test_data, epoch_num):
     """
     After each epoch, calculate the network's accuracy
     on the training set and the test set
-    :param ga_training_data, training_data, test_data, epoch_num
+    :param ga_training_data, ga_test_data training_data, test_data, epoch_num
     :return training_accuracy, testing_accuracy:
     """
     # counters for neural net votes
@@ -326,11 +347,13 @@ def calculate_accuracy(ga_training_data, training_data, test_data, epoch_num):
     training_letter_actual = []
     target_row = 0
 
+    # use ga_training_data instead of training_data for GA
     for row in ga_training_data:
         hidden_layer, Y_train = forward_propagation(row)
         training_predictions.append(Y_train)
 
         # map target value to output node (e.g. A == node[0])
+        # start at 0 for target_row and increment below to go through neural net nodes
         target_ltr = X_targets[target_row].tostring()
         target_unit = ltr_to_index[target_ltr]
         # record target letter for plotting
@@ -368,11 +391,13 @@ def calculate_accuracy(ga_training_data, training_data, test_data, epoch_num):
     test_letter_actual = []
     # reset counter for iterating through letter targets
     target_row = 0
-    for row in test_data:
+    # use ga_test_data instead of test_data for GA
+    for row in ga_test_data:
         hidden_layer, Y_test = forward_propagation(row)
         test_predictions.append(Y_test)
 
         # map target value to output node (e.g. A == node[0])
+        # start at 0 for target_row and increment below to go through neural net nodes
         target_ltr = X_targets[target_row].tostring()
         target_unit = ltr_to_index[target_ltr]
         # record target letter for plotting
@@ -454,7 +479,7 @@ def main():
     # GA population calculated in neural net file
     #############################################
 
-    training_acc_list, testing_acc_list = train(epochs, ga_pop)
+    training_acc_list, testing_acc_list = train(epochs, ga_population)
     # plot results of accuracy testing
     # plot_results(training_acc_list, testing_acc_list)
 

@@ -100,16 +100,16 @@ def sigmoid(z, derivative):
 # 16 features in row of X (neural net input) + 1 for bias
 # use 17 for number of population in GA: pop will be dim 1x17
 #############################################################
-ga_pop = gen_algorithm(1)
-print "population before mod:", ga_pop
+ga_population = gen_algorithm(1)
+print "population before mod:", ga_population
 # Overwrite last digit to be 1 so feature selection in
 # neural net will always select bias input when building
 # feature subset for GA-selected neural net input
 # (GA selects features based on the presence of 1s in the GA population string)
 # In the non-GA neural net input, X is the input:
 # X has been concatenated with a column of 1s to use for bias input
-ga_pop[-1][-1] = 1
-print "population after bias input mod:", ga_pop
+ga_population[-1][-1] = 1
+print "population after bias input mod:", ga_population
 
 ######################################################################
 # GA Feature
@@ -118,9 +118,9 @@ print "population after bias input mod:", ga_pop
 ga_row = []
 ######################################################################
 num_features = 0
-for i in xrange(len(ga_pop)):
-    for j in xrange(len(ga_pop[i])):
-        if ga_pop[i][j] == 1:
+for i in xrange(len(ga_population)):
+    for j in xrange(len(ga_population[i])):
+        if ga_population[i][j] == 1:
             # number of 1s in ga_pop determines how many features to use
             num_features +=1
             # print "len of ga_row", len(ga_row)  # variable depending on number of 1s in pop
@@ -147,7 +147,6 @@ X_scaled = preprocessing.scale(X_attributes)
 bias_input = np.full((len(letters_list_training), 1), 1.0)
 # print bias_input.shape
 X = np.concatenate((X_scaled, bias_input), axis=1)
-# print "X shape", X.shape  # 10000 x 17
 
 ######################################################################################################
 
