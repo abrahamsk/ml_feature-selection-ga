@@ -1,2 +1,6 @@
-```GO TO```
-``` neural-net-hw2/README.md```
+```
+GO TO
+```
+``` 
+neural-net-hw2/README.md
+```
