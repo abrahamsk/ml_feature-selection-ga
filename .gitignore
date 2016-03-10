@@ -1,3 +1,6 @@
+# Test files
+test/*
+
 # PDF files
 *.pdf
 

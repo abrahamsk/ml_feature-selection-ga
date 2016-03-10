@@ -111,13 +111,13 @@ ga_population = initial_ga_population(1)
 # In the non-GA neural net input, X is the input:
 # X has been concatenated with a column of 1s to use for bias input
 ga_population[-1][-1] = 1
-print "population after bias input mod:", ga_population
+print "population after bias input mod:\n", ga_population
 
 # another GA for combining with first GA pop
 ga_population_deux = initial_ga_population(1)
 # overwrite last digit for neural net bias
 ga_population_deux[-1][-1] = 1
-print "population two after bias input mod:", ga_population_deux
+print "population two after bias input mod:\n", ga_population_deux
 
 #####################################################
 # Using non-deap functions for crossover and mutation
@@ -126,23 +126,24 @@ print "population two after bias input mod:", ga_population_deux
 ga_population_crossed = genetic_cross(ga_population, ga_population_deux)
 # overwrite last digit for neural net bias
 ga_population_crossed[-1][-1] = 1
-print "Genetic cross:", ga_population_crossed
+print "Genetic cross:\n", ga_population_crossed
 
 # time to mutate!
 ga_population_mutated = mutate(ga_population_crossed)
 # overwrite last digit for neural net bias
 ga_population_mutated[-1][-1] = 1
-print "Mutated:", ga_population_mutated
+print "Mutated:\n", ga_population_mutated
 
 ############################################
 # Alternative:
 # Using deap to evaluate, crossover, mutate,
 # and replace population with offspring
+# Use original initial population string
 ############################################
 better_faster_stronger = gen_algorithm(ga_population)
 # overwrite last digit for neural net bias
 better_faster_stronger[-1][-1] = 1
-print "We have the technology...", better_faster_stronger
+print "We have the technology... (go go gadget deap)\n", better_faster_stronger
 
 ######################################################################
 # GA Feature

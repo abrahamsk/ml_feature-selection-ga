@@ -17,16 +17,16 @@ import timing
 from genetic_algorithm import *
 
 import warnings
-warnings.simplefilter(action = "ignore", category = FutureWarning)
-warnings.simplefilter(action = "ignore", category = UserWarning)
+warnings.simplefilter(action="ignore", category=FutureWarning)
+warnings.simplefilter(action="ignore", category=UserWarning)
 
 ####################
 # Program parameters
 ####################
 # number of slices taken from training and test sets
-num_rows = 100
+num_rows = 25
 # number of epochs to train the neural net
-epochs = 5
+epochs = 25
 
 
 ###############
@@ -287,7 +287,6 @@ def train_and_test(num_epochs, ga_pop):
             # build neural net input using rows with only a limited number of features
             ga_X.append(ga_row)
 
-
             hidden_layer = [] # list to hold hidden layer, to pass to back_propagation once it's filled
             #############################
             # Use GA row instead of 'row'
@@ -396,7 +395,7 @@ def calculate_accuracy(ga_training_data, ga_test_data, training_data, test_data,
         target_row += 1
 
     training_accuracy = correct_train_vote/float(len(training_predictions))
-    print "\ntraining accuracy:", training_accuracy
+    # print "\ntraining accuracy:", training_accuracy
 
     ### Test data ####
     # use forward_propagation to calculate predictions for testing data
@@ -441,7 +440,7 @@ def calculate_accuracy(ga_training_data, ga_test_data, training_data, test_data,
     # print "correct test vote", correct_test_vote
     # print "len of test predictions", len(test_predictions)
     testing_accuracy = correct_test_vote/float(len(test_predictions))
-    print "test accuracy:", testing_accuracy
+    # print "test accuracy:", testing_accuracy
     return training_accuracy, testing_accuracy
 
 
@@ -479,6 +478,7 @@ ltr_to_index = dict(zip(string.ascii_uppercase, range(0,26)))
 # Experiment 1 #
 ################
 
+
 ######
 # main
 ######
@@ -488,6 +488,8 @@ def main():
     # lists for training and testing accuracies over multiple epochs
     training_acc_list = []
     testing_acc_list = []
+    training_acc_list_deux = []
+    testing_acc_list_deux = []
 
     #############################################
     # GA population calculated in neural net file
@@ -495,12 +497,14 @@ def main():
     print "*******************"
     print "Running neural net training & test with initial GA population..."
     training_acc_list, testing_acc_list = train_and_test(epochs, ga_population)
+    print "\nTraining accuracy, testing accuracy:", training_acc_list, testing_acc_list
     # plot results of accuracy testing
     # plot_results(training_acc_list, testing_acc_list)
     print "Initial run done."
     print "*******************"
     print "Running nn training & test with shiny new GA population..."
     training_acc_list_deux, testing_acc_list_deux = train_and_test(epochs, better_faster_stronger)
+    print "\nTraining accuracy, testing accuracy:", training_acc_list_deux, testing_acc_list_deux
     print "Second round done."
     print "*******************"
 
