@@ -101,7 +101,8 @@ def sigmoid(z, derivative):
 # 16 features in row of X (neural net input) + 1 for bias
 # use 17 for number of population in GA: pop will be dim 1x17
 #############################################################
-ga_population = gen_algorithm(1)
+# ga_population = gen_algorithm(1)
+ga_population = initial_ga_population(1)
 # print "population before mod:", ga_population
 # Overwrite last digit to be 1 so feature selection in
 # neural net will always select bias input when building
@@ -113,7 +114,7 @@ ga_population[-1][-1] = 1
 print "population after bias input mod:", ga_population
 
 # another GA for combining with first GA pop
-ga_population_deux = gen_algorithm(1)
+ga_population_deux = initial_ga_population(1)
 # overwrite last digit for neural net bias
 ga_population_deux[-1][-1] = 1
 print "population two after bias input mod:", ga_population_deux

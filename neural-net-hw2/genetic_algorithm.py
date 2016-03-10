@@ -112,17 +112,27 @@ Returns:
 
 The final population and a Logbook with the statistics of the evolution.
 """
-# deap.algorithms.eaSimple(population, toolbox, cxpb, mutpb, ngen)
-
-# complete generational algorithm:
-
-def gen_algorithm(pop_size):
+# separated out initial population generation from the rest of the deap generatic algorithm
+def initial_ga_population(pop_size):
     """
     Genetic algorithm for feature subset selection
-    :arg pop_size: population size
-    :return:
+    :param pop_size: population size
+    :return pop:
     """
     pop = toolbox.population(n=pop_size)
+    return pop
+
+# deap.algorithms.eaSimple(population, toolbox, cxpb, mutpb, ngen)
+
+
+# complete generational algorithm (sans initial population generation)
+def gen_algorithm(pop):
+    """
+    Genetic algorithm for feature subset selection
+    :param pop: GA population
+    :return pop:
+    """
+    # pop = toolbox.population(n=pop_size)
     # print "pop before changes: ", len(pop)  # len pop_size with 10 items at each index
     # use genetic algorithm parameters from paper
     # CXPB, MUTPB, NGEN = 0.6, 0.001, 20
