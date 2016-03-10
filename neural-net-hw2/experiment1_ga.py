@@ -19,6 +19,14 @@ import warnings
 warnings.simplefilter(action = "ignore", category = FutureWarning)
 warnings.simplefilter(action = "ignore", category = UserWarning)
 
+####################
+# Program parameters
+####################
+# number of slices taken from training and test sets
+num_rows = 10
+# number of epochs to train the neural net
+epochs = 5
+
 
 ###############
 # function defs
@@ -33,7 +41,7 @@ def forward_propagation(row):
     :return output of neural net:
     """
     # check row shape
-    print "- row shape, forward prop:", len(row)
+    # print "- row shape, forward prop:", len(row)
 
     # transpose row vector for matrix multiplication
     X_row = np.mat(row)
@@ -255,8 +263,8 @@ def train(num_epochs, ga_pop):
         # count keeps track of which index of target to pass in
         target_row = 0
         # iterate over input data
-        for row in X[0:5]:
-            print "\nTRAIN another row of X..."
+        for row in X[0:num_rows]:
+            # print "\nTRAIN another row of X..."
             ######################################################################
             # GA Feature
             # Select feature subset from genetic algorithm to pass to forward prop
@@ -267,7 +275,7 @@ def train(num_epochs, ga_pop):
                 for j in xrange(len(ga_pop[i])):
                     if ga_pop[i][j] == 1:
                         ga_row.append(row[j]) # build feature subset
-            print "len of ga_row, training:", len(ga_row)  # variable depending on number of 1s in pop
+            # print "len of ga_row, training:", len(ga_row)  # variable depending on number of 1s in pop
             # print "ga row", ga_row
             # pass in ga_row to forward_prop instead of row
 
@@ -294,7 +302,7 @@ def train(num_epochs, ga_pop):
         # check integrity of total input for GA neural net input
         # print "ga X:", ga_X
 
-        print "Done with training loop!\n"
+        # print "Done with training loop!\n"
 
         ############################################################
         # Build test data using features selected from GA population
@@ -303,20 +311,19 @@ def train(num_epochs, ga_pop):
         ga_test_row = [] # build testing data
         ga_test_pop = ga_pop[:]
         # print ga_test_pop
-        print "TEST Building test set..."
-        # for row in X_test[0:5]:
+        # print "TEST Building test set..."
         for i in xrange(len(ga_test_pop)):
             for j in xrange(len(ga_test_pop[i])):
                 if ga_test_pop[i][j] == 1:
                     ga_test_row.append(X_test[i][j])  # build feature subset
-        print "TEST len of ga_test_row", len(ga_test_row)  # variable depending on number of 1s in pop
+        # print "TEST len of ga_test_row", len(ga_test_row)  # variable depending on number of 1s in pop
         # print "ga row", ga_test_row
         # build neural net test input using rows with only a limited number of features
         ga_X_test.append(ga_test_row)
 
         # After each epoch, calculate the network's accuracy
         # on the training set and the test set
-        training_accuracy, testing_accuracy = calculate_accuracy(ga_X, ga_X_test, X[0:5], X_test[0:5], epoch_increment)
+        training_accuracy, testing_accuracy = calculate_accuracy(ga_X, ga_X_test, X[0:num_rows], X_test[0:num_rows], epoch_increment)
         training_acc_list.append(training_accuracy)
         testing_acc_list.append(testing_accuracy)
         # print "\ntraining list in train", training_acc_list
@@ -467,9 +474,8 @@ ltr_to_index = dict(zip(string.ascii_uppercase, range(0,26)))
 ######
 # main
 ######
-epochs = 1
 def main():
-    #train the neural net for <epochs> number of epochs
+    # train the neural net for <epochs> number of epochs
     # using forward and back propagation
     # lists for training and testing accuracies over multiple epochs
     training_acc_list = []
@@ -481,7 +487,7 @@ def main():
 
     training_acc_list, testing_acc_list = train(epochs, ga_population)
     # plot results of accuracy testing
-    # plot_results(training_acc_list, testing_acc_list)
+    plot_results(training_acc_list, testing_acc_list)
 
 if __name__ == "__main__":
     main()
