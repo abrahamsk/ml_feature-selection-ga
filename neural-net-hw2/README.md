@@ -1,6 +1,6 @@
 # ml_neural-networks
 
-Experiments in using feature subset selection to improve neural net performance.
+Experiments in using feature subset selection to improve neural net performance.  
 See: *Feature Subset Selection Using a Genetic Algorithm* (Yang, Honavar 1997)
 
 #### Running:
