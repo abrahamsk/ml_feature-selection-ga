@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-##  utf-8 for non-ASCII chars
+# coding=utf-8
 
+# Katie Abrahams
+# abrahake@pdx.edu
+# ML Independent Study
+# Winter 2016
 # neural net code modified from ML HW 2
-
-# noinspection PyFromFutureImport
 
 from __future__ import division # want float and not int division
 # import data structures, variables, and neural net from neural_net
@@ -23,7 +24,7 @@ warnings.simplefilter(action = "ignore", category = UserWarning)
 # Program parameters
 ####################
 # number of slices taken from training and test sets
-num_rows = 10
+num_rows = 100
 # number of epochs to train the neural net
 epochs = 5
 
@@ -37,7 +38,7 @@ def forward_propagation(row):
     Forward propagate the input through the neural network
     during neural network training
     Does not include error computation
-    :param row of data matrix:
+    :param row: (row of data matrix)
     :return output of neural net:
     """
     # check row shape
@@ -78,6 +79,7 @@ def forward_propagation(row):
 
 ################################################################################################
 
+
 def back_propagation(hidden_activations, output_activations, target, row):
     """
     Function called in train()
@@ -85,7 +87,10 @@ def back_propagation(hidden_activations, output_activations, target, row):
     during training to update all weights in the network.
     Pass in activation of output layer and
     target letter corresponding to the row that is currently being passed through the neural net
-    :param hidden_activations, output_activations, target, row of input:
+    :param hidden_activations:
+    :param output_activations:
+    :param target:
+    :param row:
     :return error:
     """
 
@@ -487,7 +492,7 @@ def main():
 
     training_acc_list, testing_acc_list = train(epochs, ga_population)
     # plot results of accuracy testing
-    plot_results(training_acc_list, testing_acc_list)
+    # plot_results(training_acc_list, testing_acc_list)
 
 if __name__ == "__main__":
     main()

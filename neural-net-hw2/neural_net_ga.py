@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # coding=utf-8
 
+# Katie Abrahams
+# abrahake@pdx.edu
+# ML Independent Study
+# Winter 2016
 # neural net code modified from ML HW 2
-
-import sys, math, random, numpy as np
 
 from input import letters_list_training, letters_list_testing
 # preprocessing to scale training data
 from sklearn import preprocessing
 from genetic_algorithm import *
-
-
+import sys, math, random, numpy as np
 import warnings
 warnings.simplefilter(action = "ignore", category = FutureWarning)
 warnings.simplefilter(action = "ignore", category = UserWarning)
@@ -101,7 +102,7 @@ def sigmoid(z, derivative):
 # use 17 for number of population in GA: pop will be dim 1x17
 #############################################################
 ga_population = gen_algorithm(1)
-print "population before mod:", ga_population
+# print "population before mod:", ga_population
 # Overwrite last digit to be 1 so feature selection in
 # neural net will always select bias input when building
 # feature subset for GA-selected neural net input
@@ -110,6 +111,24 @@ print "population before mod:", ga_population
 # X has been concatenated with a column of 1s to use for bias input
 ga_population[-1][-1] = 1
 print "population after bias input mod:", ga_population
+
+# another GA for combining with first GA pop
+ga_population_deux = gen_algorithm(1)
+# overwrite last digit for neural net bias
+ga_population_deux[-1][-1] = 1
+print "population two after bias input mod:", ga_population_deux
+
+# randomly combine from the two lists
+ga_population_crossed = genetic_cross(ga_population, ga_population_deux)
+# overwrite last digit for neural net bias
+ga_population_crossed[-1][-1] = 1
+print "Genetic cross:", ga_population_crossed
+
+# time to mutate!
+ga_population_mutated = mutate(ga_population_crossed)
+# overwrite last digit for neural net bias
+ga_population_mutated[-1][-1] = 1
+print "Mutated:", ga_population_mutated
 
 ######################################################################
 # GA Feature

@@ -11,6 +11,18 @@ from deap import creator, base, tools, algorithms
 import random
 from neural_net_ga import *
 
+####################
+# Program parameters
+####################
+
+# use genetic algorithm parameters from paper
+# for use in genetic_algorithm() and mutate()
+# cxpb – The probability of mating two individuals.
+# mutpb – The probability of mutating an individual.
+# ngen – The number of generation.
+CXPB, MUTPB, NGEN = 0.6, 0.001, 20
+
+
 #########################
 # Genetic algorithm setup
 #########################
@@ -113,7 +125,7 @@ def gen_algorithm(pop_size):
     pop = toolbox.population(n=pop_size)
     # print "pop before changes: ", len(pop)  # len pop_size with 10 items at each index
     # use genetic algorithm parameters from paper
-    CXPB, MUTPB, NGEN = 0.6, 0.001, 20
+    # CXPB, MUTPB, NGEN = 0.6, 0.001, 20
 
     # Evaluate the entire population
     fitnesses = map(toolbox.evaluate, pop)
@@ -150,6 +162,45 @@ def gen_algorithm(pop_size):
     return pop
 
 ###############################################################################
+
+
+def genetic_cross(gen_pop_one, gen_pop_two):
+    """
+    Randomly combine from the two lists of genetic populations
+    Note: "population" here refers to something that functions more like a chromosome
+    :return crossed_population:
+    """
+    combined_pop = []
+    gene = []
+    for i, j in zip(gen_pop_one, gen_pop_two):
+        gene.append(i)
+        gene.append(j)
+        combined_pop.append(random.choice(gene))
+
+    return combined_pop
+
+###############################################################################
+
+
+def mutate(gene):
+    """
+    Mutate a genetic algorithm population string
+    :param gene:
+    :return:
+    """
+    options = [0,1]
+    for nucleotide in gene:
+        # if chance of mutation is greater than random, mutate a random spot in the gene
+        if MUTPB > random.random():
+            # chose the spot that will mutate
+            mutation_location = random.randint(0, len(nucleotide))
+            # choose new value from the options of 0 and 1
+            nucleotide[mutation_location] = random.choice(options)
+    return gene
+
+
+###############################################################################
+
 
 def main():
     test = 5
