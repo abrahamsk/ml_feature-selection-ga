@@ -323,12 +323,12 @@ def train_and_test(num_epochs, ga_pop):
         # print ga_test_pop
         # print "TEST Building test set..."
         # print "len ga_test_pop", len(ga_test_pop)
-        for row in X_test[0:num_rows]:
-            ga_test_row = [] # build training data
-            for i in xrange(len(ga_test_pop)):
-                for j in xrange(len(ga_test_pop[i])):
-                    if ga_test_pop[i][j] == 1:
-                        ga_test_row.append(X_test[i][j])  # build feature subset
+        # for row in X_test[0:num_rows]:
+        #     ga_test_row = [] # build training data
+        for i in xrange(len(ga_test_pop)):
+            for j in xrange(len(ga_test_pop[i])):
+                if ga_test_pop[i][j] == 1:
+                    ga_test_row.append(X_test[i][j])  # build feature subset
         # print "TEST len of ga_test_row", len(ga_test_row)  # variable depending on number of 1s in pop
         # print "ga row", ga_test_row
         # build neural net test input using rows with only a limited number of features

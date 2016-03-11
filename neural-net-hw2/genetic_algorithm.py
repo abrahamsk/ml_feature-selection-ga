@@ -122,7 +122,7 @@ The final population and a Logbook with the statistics of the evolution.
 # separate out initial population generation from the rest of the deap genetic algorithm
 def initial_ga_population(pop_size):
     """
-    Genetic algorithm for feature subset selection
+    Genetic algorithm initial population
     :param pop_size: population size
     :return pop:
     """
