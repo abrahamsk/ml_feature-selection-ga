@@ -113,26 +113,29 @@ ga_population = initial_ga_population(1)
 ga_population[-1][-1] = 1
 print "population after bias input mod:\n", ga_population
 
-# # another GA for combining with first GA pop
-# ga_population_deux = initial_ga_population(1)
-# # overwrite last digit for neural net bias
-# ga_population_deux[-1][-1] = 1
-# print "population two after bias input mod:\n", ga_population_deux
-#
-# #####################################################
-# # Using non-deap functions for crossover and mutation
-# #####################################################
-# # randomly combine from the two lists
-# ga_population_crossed = genetic_cross(ga_population, ga_population_deux)
-# # overwrite last digit for neural net bias
-# ga_population_crossed[-1][-1] = 1
-# print "Genetic cross:\n", ga_population_crossed
-#
-# # time to mutate!
-# ga_population_mutated = mutate(ga_population_crossed)
-# # overwrite last digit for neural net bias
-# ga_population_mutated[-1][-1] = 1
-# print "Mutated:\n", ga_population_mutated
+# another GA for combining with first GA pop
+ga_population_deux = initial_ga_population(1)
+# overwrite last digit for neural net bias
+ga_population_deux[-1][-1] = 1
+print "population two after bias input mod:\n", ga_population_deux
+
+#####################################################
+# Using non-deap functions for crossover and mutation
+#####################################################
+# randomly combine from the two lists
+ga_population_crossed = genetic_cross(ga_population, ga_population_deux)
+# overwrite last digit for neural net bias
+ga_population_crossed[-1][-1] = 1
+print "Genetic cross:\n", ga_population_crossed
+
+# time to mutate!
+ga_population_mutated = mutate(ga_population_crossed)
+# overwrite last digit for neural net bias
+ga_population_mutated[-1][-1] = 1
+print "Mutated:\n",ga_population_mutated
+
+# print "orig len", len(ga_population[0])
+# print "mutated len", len(ga_population_mutated[0])
 
 ############################################
 # Alternative:
@@ -140,24 +143,30 @@ print "population after bias input mod:\n", ga_population
 # and replace population with offspring
 # Use original initial population string
 ############################################
-better_faster_stronger = gen_algorithm(ga_population)
-# overwrite last digit for neural net bias
-better_faster_stronger[-1][-1] = 1
-print "We have the technology... (go go gadget deap)\n", better_faster_stronger
+# better_faster_stronger = gen_algorithm(1)
+# # overwrite last digit for neural net bias
+# better_faster_stronger[-1][-1] = 1
+# print "We have the technology... (go go gadget deap)\n", better_faster_stronger
 
 ######################################################################
 # GA Feature
 # Select feature subset from genetic algorithm to pass to forward prop
 # If the index in GA pop is 1, include that feature in training
-ga_row = []
 ######################################################################
-num_features = 0
-for i in xrange(len(ga_population)):
-    for j in xrange(len(ga_population[i])):
-        if ga_population[i][j] == 1:
-            # number of 1s in ga_pop determines how many features to use
-            num_features +=1
-            # print "len of ga_row", len(ga_row)  # variable depending on number of 1s in pop
+def get_num_features(ga_population):
+    """
+    :param ga_population:
+    :return num features:
+    """
+    ga_row = []
+    num_features = 0
+    for i in xrange(len(ga_population)):
+        for j in xrange(len(ga_population[i])):
+            if ga_population[i][j] == 1:
+                # number of 1s in ga_pop determines how many features to use
+                num_features +=1
+                # print "len of ga_row", len(ga_row)  # variable depending on number of 1s in pop
+    return num_features
 
 ######################################################################################################
 
@@ -212,7 +221,9 @@ X_test = np.concatenate((X_test_scaled, test_bias_input), axis=1)
 # Weight matrices have the same number of columns as units in the previous layer
 # and the same number of rows as units in the next layer
 # n is the number of hidden units
-input_to_hidden_weights = np.random.uniform(low= -.25, high= .25, size=(n, num_features))
+#### creation of # input_to_hidden_weights moved to experiment code (train_and_test) to make it
+#### dynamic for the number of features for each GA string
+#### input_to_hidden_weights = np.random.uniform(low= -.25, high= .25, size=(n, num_features))
 # print "input to hidden weights shape", input_to_hidden_weights.shape #4x17
 
 #### Weights from hidden layer to output layer ####

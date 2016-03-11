@@ -32,13 +32,14 @@ epochs = 10
 ###############
 # function defs
 ###############
-def forward_propagation(row):
+def forward_propagation(row, input_to_hidden_weights):
     """
     Function called in train_and_test()
     Forward propagate the input through the neural network
     during neural network training
     Does not include error computation
     :param row: (row of data matrix)
+    :param input_to_hidden_weights:
     :return output of neural net:
     """
     # check row shape
@@ -80,7 +81,7 @@ def forward_propagation(row):
 ################################################################################################
 
 
-def back_propagation(hidden_activations, output_activations, target, row):
+def back_propagation(hidden_activations, output_activations, target, row, input_to_hidden_weights):
     """
     Function called in train_and_test()
     The the back-propagation algorithm is used
@@ -91,6 +92,7 @@ def back_propagation(hidden_activations, output_activations, target, row):
     :param output_activations:
     :param target:
     :param row:
+    :param input_to_hidden_weights:
     :return error:
     """
 
@@ -237,6 +239,10 @@ def train_and_test(num_epochs, ga_pop):
     """
     epoch_increment = 0
 
+    # get the number of features to use in feature subset selection
+    # by finding the number of 1s in the ga_pop
+    num_features = get_num_features(ga_pop)
+    input_to_hidden_weights = np.random.uniform(low= -.25, high= .25, size=(n, num_features))
 
     training_acc_list = []
     testing_acc_list = []
@@ -297,11 +303,11 @@ def train_and_test(num_epochs, ga_pop):
             #############################
             # Use GA row instead of 'row'
             #############################
-            hidden_layer, Y = forward_propagation(ga_row)
+            hidden_layer, Y = forward_propagation(ga_row, input_to_hidden_weights)
             # use back propagation to compute error and adjust weights
             # pass in activations of hidden and output layer and target letter corresponding to the row
             # that is currently being passed through the neural net
-            back_propagation(hidden_layer, Y, X_targets[target_row], ga_row)
+            back_propagation(hidden_layer, Y, X_targets[target_row], ga_row, input_to_hidden_weights)
 
             # move to next row of input data to use new target
             target_row += 1
@@ -345,7 +351,8 @@ def train_and_test(num_epochs, ga_pop):
         ###############
         # After each epoch, calculate the network's accuracy
         # on the training set and the test set
-        training_accuracy, testing_accuracy = calculate_accuracy(ga_X, ga_X_test, X[0:num_rows], X_test[0:num_rows], epoch_increment)
+        training_accuracy, testing_accuracy = calculate_accuracy(ga_X, ga_X_test, X[0:num_rows], X_test[0:num_rows],
+                                                                 epoch_increment, input_to_hidden_weights)
         training_acc_list.append(training_accuracy)
         testing_acc_list.append(testing_accuracy)
         # print "\ntraining list in train", training_acc_list
@@ -357,11 +364,11 @@ def train_and_test(num_epochs, ga_pop):
 
 ################################################################################################
 
-def calculate_accuracy(ga_training_data, ga_test_data, training_data, test_data, epoch_num):
+def calculate_accuracy(ga_training_data, ga_test_data, training_data, test_data, epoch_num, input_to_hidden_weights):
     """
     After each epoch, calculate the network's accuracy
     on the training set and the test set
-    :param ga_training_data, ga_test_data training_data, test_data, epoch_num
+    :param ga_training_data, ga_test_data training_data, test_data, epoch_num, input_to_hidden_weights
     :return training_accuracy, testing_accuracy:
     """
     # counters for neural net votes
@@ -378,7 +385,7 @@ def calculate_accuracy(ga_training_data, ga_test_data, training_data, test_data,
 
     # use ga_training_data instead of training_data for GA
     for row in ga_training_data:
-        hidden_layer, Y_train = forward_propagation(row)
+        hidden_layer, Y_train = forward_propagation(row, input_to_hidden_weights)
         training_predictions.append(Y_train)
 
         # map target value to output node (e.g. A == node[0])
@@ -428,7 +435,7 @@ def calculate_accuracy(ga_training_data, ga_test_data, training_data, test_data,
     target_row = 0
     # use ga_test_data instead of test_data for GA
     for row in ga_test_data:
-        hidden_layer, Y_test = forward_propagation(row)
+        hidden_layer, Y_test = forward_propagation(row, input_to_hidden_weights)
         test_predictions.append(Y_test)
 
         # map target value to output node (e.g. A == node[0])
@@ -531,7 +538,7 @@ def main():
     print "Initial run done."
     print "*******************"
     print "Running nn training & test with shiny new GA population..."
-    training_acc_list_deux, testing_acc_list_deux = train_and_test(epochs, better_faster_stronger)
+    training_acc_list_deux, testing_acc_list_deux = train_and_test(epochs, ga_population_mutated)
     print "\nTraining accuracy, testing accuracy:", training_acc_list_deux, testing_acc_list_deux
     print "Second round done."
     print "*******************"

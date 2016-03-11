@@ -21,8 +21,8 @@ from neural_net_ga import *
 # cxpb – The probability of mating two individuals.
 # mutpb – The probability of mutating an individual.
 # ngen – The number of generation.
-CXPB, MUTPB, NGEN = 0.6, 0.001, 20
-
+# CXPB, MUTPB, NGEN = 0.6, 0.001, 20
+CXPB, MUTPB, NGEN = 0.5, 0.2, 40
 
 #########################
 # Genetic algorithm setup
@@ -132,16 +132,17 @@ def initial_ga_population(pop_size):
 ##########################
 # More verbose alternative
 ##########################
+# ref: deap.readthedocs.org/en/master/overview.html
 # complete generational algorithm sans initial population generation
 # see initial_ga_population(pop_size) above for initial pop generation
-def gen_algorithm(pop):
+def gen_algorithm(pop_size):
     """
     Genetic algorithm for feature subset selection
     :param pop: GA population
     :return pop:
     """
-    # pop = toolbox.population(n=pop_size)
-    # print "pop before changes: ", len(pop)  # len pop_size with 10 items at each index
+    pop = toolbox.population(n=pop_size)
+    # print "initial population:\n", pop  # len pop_size with 10 items at each index
     # use genetic algorithm parameters from paper
     # CXPB, MUTPB, NGEN = 0.6, 0.001, 20
 
@@ -155,6 +156,7 @@ def gen_algorithm(pop):
         offspring = toolbox.select(pop, len(pop))
         # Clone the selected individuals
         offspring = map(toolbox.clone, offspring)
+        # print "offspring:\n", offspring
 
         # Apply crossover and mutation on the offspring
         for child1, child2 in zip(offspring[::2], offspring[1::2]):
@@ -176,6 +178,7 @@ def gen_algorithm(pop):
 
         # The population is entirely replaced by the offspring
         pop[:] = offspring
+    # print "pop at the end of gen algorithm:\n", pop
 
     return pop
 
@@ -212,7 +215,7 @@ def mutate(gene):
     options = [0,1]
     for nucleotide in gene:
         # if chance of mutation is greater than random, mutate a random spot in the gene
-        if MUTPB > random.random():
+        if random.random() < MUTPB:
             # chose the spot that will mutate
             mutation_location = random.randint(0, len(nucleotide))
             # choose new value from the options of 0 and 1
