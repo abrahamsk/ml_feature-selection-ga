@@ -24,9 +24,9 @@ warnings.simplefilter(action="ignore", category=UserWarning)
 # Program parameters
 ####################
 # number of slices taken from training and test sets
-num_rows = 25
+num_rows = 10
 # number of epochs to train the neural net
-epochs = 25
+epochs = 10
 
 
 ###############
@@ -237,8 +237,14 @@ def train_and_test(num_epochs, ga_pop):
     """
     epoch_increment = 0
 
+
     training_acc_list = []
     testing_acc_list = []
+    # clear list if need be
+    if training_acc_list:
+        training_acc_list[:] = []
+    if testing_acc_list:
+        testing_acc_list[:] = []
 
     # run training for <num_epochs> number of epochs (defined before func is called in main)
     # each epoch runs through entire training set
@@ -316,14 +322,23 @@ def train_and_test(num_epochs, ga_pop):
         ga_test_pop = ga_pop[:]
         # print ga_test_pop
         # print "TEST Building test set..."
-        for i in xrange(len(ga_test_pop)):
-            for j in xrange(len(ga_test_pop[i])):
-                if ga_test_pop[i][j] == 1:
-                    ga_test_row.append(X_test[i][j])  # build feature subset
+        # print "len ga_test_pop", len(ga_test_pop)
+        for row in X_test[0:num_rows]:
+            ga_test_row = [] # build training data
+            for i in xrange(len(ga_test_pop)):
+                for j in xrange(len(ga_test_pop[i])):
+                    if ga_test_pop[i][j] == 1:
+                        ga_test_row.append(X_test[i][j])  # build feature subset
         # print "TEST len of ga_test_row", len(ga_test_row)  # variable depending on number of 1s in pop
         # print "ga row", ga_test_row
         # build neural net test input using rows with only a limited number of features
         ga_X_test.append(ga_test_row)
+        # print "---------------------"
+        # print "ga_X", len(ga_X)
+        # print "---------------------"
+        # print "ga_X_test", len(ga_X_test)
+        # print "---------------------"
+
 
         ###############
         # Test accuracy
@@ -397,6 +412,12 @@ def calculate_accuracy(ga_training_data, ga_test_data, training_data, test_data,
     training_accuracy = correct_train_vote/float(len(training_predictions))
     # print "\ntraining accuracy:", training_accuracy
 
+    # clear list contents
+    training_predictions[:] = []
+    # record values for plotting
+    training_letter_vote[:] = []
+    training_letter_actual[:] = []
+
     ### Test data ####
     # use forward_propagation to calculate predictions for testing data
     test_predictions = []
@@ -441,6 +462,13 @@ def calculate_accuracy(ga_training_data, ga_test_data, training_data, test_data,
     # print "len of test predictions", len(test_predictions)
     testing_accuracy = correct_test_vote/float(len(test_predictions))
     # print "test accuracy:", testing_accuracy
+
+    # clear list contents
+    test_predictions[:] = []
+    # record values for plotting
+    test_letter_vote[:] = []
+    test_letter_actual[:] = []
+
     return training_accuracy, testing_accuracy
 
 

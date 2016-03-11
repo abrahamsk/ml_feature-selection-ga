@@ -113,26 +113,26 @@ ga_population = initial_ga_population(1)
 ga_population[-1][-1] = 1
 print "population after bias input mod:\n", ga_population
 
-# another GA for combining with first GA pop
-ga_population_deux = initial_ga_population(1)
-# overwrite last digit for neural net bias
-ga_population_deux[-1][-1] = 1
-print "population two after bias input mod:\n", ga_population_deux
-
-#####################################################
-# Using non-deap functions for crossover and mutation
-#####################################################
-# randomly combine from the two lists
-ga_population_crossed = genetic_cross(ga_population, ga_population_deux)
-# overwrite last digit for neural net bias
-ga_population_crossed[-1][-1] = 1
-print "Genetic cross:\n", ga_population_crossed
-
-# time to mutate!
-ga_population_mutated = mutate(ga_population_crossed)
-# overwrite last digit for neural net bias
-ga_population_mutated[-1][-1] = 1
-print "Mutated:\n", ga_population_mutated
+# # another GA for combining with first GA pop
+# ga_population_deux = initial_ga_population(1)
+# # overwrite last digit for neural net bias
+# ga_population_deux[-1][-1] = 1
+# print "population two after bias input mod:\n", ga_population_deux
+#
+# #####################################################
+# # Using non-deap functions for crossover and mutation
+# #####################################################
+# # randomly combine from the two lists
+# ga_population_crossed = genetic_cross(ga_population, ga_population_deux)
+# # overwrite last digit for neural net bias
+# ga_population_crossed[-1][-1] = 1
+# print "Genetic cross:\n", ga_population_crossed
+#
+# # time to mutate!
+# ga_population_mutated = mutate(ga_population_crossed)
+# # overwrite last digit for neural net bias
+# ga_population_mutated[-1][-1] = 1
+# print "Mutated:\n", ga_population_mutated
 
 ############################################
 # Alternative:
