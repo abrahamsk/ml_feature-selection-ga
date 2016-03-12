@@ -23,6 +23,7 @@ from neural_net_ga import *
 # ngen – The number of generation.
 # CXPB, MUTPB, NGEN = 0.6, 0.001, 20
 CXPB, MUTPB, NGEN = 0.5, 0.2, 40
+# change MUTPB to make mutation happen more or less often
 
 #########################
 # Genetic algorithm setup
@@ -214,8 +215,10 @@ def mutate(gene):
     """
     options = [0,1]
     for nucleotide in gene:
+        print "mutating?"
         # if chance of mutation is greater than random, mutate a random spot in the gene
         if random.random() < MUTPB:
+            print "mutating!"
             # chose the spot that will mutate
             mutation_location = random.randint(0, len(nucleotide))
             # choose new value from the options of 0 and 1

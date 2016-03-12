@@ -27,6 +27,8 @@ warnings.simplefilter(action="ignore", category=UserWarning)
 num_rows = 10
 # number of epochs to train the neural net
 epochs = 10
+# number of times to run GA algorithm
+ga_rounds = 10
 
 
 ###############
@@ -242,6 +244,8 @@ def train_and_test(num_epochs, ga_pop):
     # get the number of features to use in feature subset selection
     # by finding the number of 1s in the ga_pop
     num_features = get_num_features(ga_pop)
+    # create weights from input -> hidden layer using the correct number of features
+    # selected by genetic algorithm (num_features)
     input_to_hidden_weights = np.random.uniform(low= -.25, high= .25, size=(n, num_features))
 
     training_acc_list = []
@@ -538,9 +542,25 @@ def main():
     print "Initial run done."
     print "*******************"
     print "Running nn training & test with shiny new GA population..."
-    training_acc_list_deux, testing_acc_list_deux = train_and_test(epochs, ga_population_mutated)
-    print "\nTraining accuracy, testing accuracy:", training_acc_list_deux, testing_acc_list_deux
-    print "Second round done."
+    # run GA algorithm for multiple rounds
+    ga_accuracy = 0
+    prior_acc = 0
+    avg_acc = 0
+    acc_improvement = False
+    for i in xrange(ga_rounds):
+        global ga_population_mutated
+        training_acc_list_deux, testing_acc_list_deux = train_and_test(epochs, ga_population_mutated)
+        print "\nTraining accuracy, testing accuracy:", training_acc_list_deux, testing_acc_list_deux
+        # get avg of accuracy across epochs and store for comparison with next run
+        prior_acc = avg_acc
+        avg_acc = np.mean(training_acc_list_deux)
+        if avg_acc > prior_acc:
+            acc_improvement = True
+        # run GA functions
+        ga_population_mutated = genetic_cross(ga_population_mutated, ga_population_mutated)
+        ga_population_mutated = mutate(ga_population_mutated)
+        print i+1,"round(s) done."
+    print "GA rounds complete."
     print "*******************"
 
 if __name__ == "__main__":
