@@ -7,7 +7,7 @@ See: *Feature Subset Selection Using a Genetic Algorithm* (Yang, Honavar 1997)
 Execute `experiment1_ga.py` from your IDE or command line of choice.  
 Key files for running GA-modified neural net:
 ```
-neural-net-hw2/
+neural-net-ga/
     genetic_algorithm.py  
     neural_net_ga.py  
     experiment1_ga.py
