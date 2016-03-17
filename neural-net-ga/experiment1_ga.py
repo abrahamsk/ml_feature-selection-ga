@@ -344,9 +344,9 @@ def train_and_test(num_epochs, ga_initial_pop):
                     if ga_test_pop[i][j] == 1:
                         # ga_test_row.append(X_test[i][j])  # build feature subset
                         ga_test_row.append(row[j])
-        # print "TEST len of ga_test_row", len(ga_test_row)  # variable depending on number of 1s in pop
-        # print "ga row", ga_test_row
-        # build neural net test input using rows with only a limited number of features
+            # print "TEST len of ga_test_row", len(ga_test_row)  # variable depending on number of 1s in pop
+            # print "ga row", ga_test_row
+            # build neural net test input using rows with only a limited number of features
             ga_X_test.append(ga_test_row)
 
         # print "---------------------"
