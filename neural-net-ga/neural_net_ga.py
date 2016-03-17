@@ -88,12 +88,16 @@ n = 4
 def sigmoid(z, derivative):
     if derivative:
         return sigmoid(z) * (1-sigmoid(z))
-    else: # derivative is False
+    else:  # derivative is False
         return 1 / (1+np.exp(-z))
 
 #################
 # data structures
 #################
+
+##################################
+# Feature subset selection strings
+##################################
 
 ##############################################################
 # GA Feature
@@ -112,6 +116,13 @@ ga_population = initial_ga_population(1)
 # X has been concatenated with a column of 1s to use for bias input
 ga_population[-1][-1] = 1
 print "population after bias input mod:\n", ga_population
+
+#################################################
+# string of all 1s to select all features
+# for comparison with GA feature subset selection
+#################################################
+all_features = [[1 for i in xrange(len(ga_population[0]))]]
+print "all features selection string:\n", all_features
 
 # another GA for combining with first GA pop
 ga_population_deux = initial_ga_population(1)

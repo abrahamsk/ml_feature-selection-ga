@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-# Machine Learning 445
-# HW 2: Neural Networks
-# Katie Abrahams, abrahake@pdx.edu
-# 1/28/16
+# Katie Abrahams
+# abrahake@pdx.edu
+# ML Independent Study
+# Winter 2016
+
 import random
 from letter import letter
 import numpy as np
