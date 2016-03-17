@@ -309,7 +309,7 @@ def create_gen_population():
 #######################################################################
 # Use a combo of DEAP and non-DEAP functions for crossover and mutation
 #######################################################################
-def genetic_algorithm(pop):
+def genetic_algorithm(population):
     """
     Run genetic cross on parents and mutate offspring
     Uses a mix of DEAP library and original functions
@@ -327,71 +327,41 @@ def genetic_algorithm(pop):
         # print "ind type:",type(ind)
         ind.fitness.values = fit
 
-    # # run for NGEN number of generations
-    # for g in range(NGEN):
-    #     # Select the next generation individuals
-    #     # offspring = toolbox.select(population, len(population))
-    #     # # Clone the selected individuals
-    #     # offspring = map(toolbox.clone, offspring)
-    #     # # print "offspring:\n", offspring
-    #
-    #     # subdivide population for genetic cross
-    #     sub_pop_one = population[0][::2]  # get every second item of population
-    #     sub_pop_two = population[0][1::2]
-    #
-    #     # apply crossover
-    #     ga_population_crossed = genetic_cross(sub_pop_one, sub_pop_two)
-    #     # add last digit for neural net bias
-    #     ga_population_crossed[0].append(1)
-    #     # print "Genetic cross:\n", ga_population_crossed
-    #     # print "len genetic cross:", len(ga_population_crossed[0])
-    #
-    #     # time to mutate!
-    #     ga_population_mutated = mutate(ga_population_crossed)
-    #     # overwrite last digit for neural net bias
-    #     ga_population_mutated[-1][-1] = 1
-    #     # print "Mutated:\n", ga_population_mutated
-    #
-    #     # print "orig len", len(ga_population[0])
-    #     # print "mutated len", len(ga_population_mutated[0])
-    #
-    #     # Evaluate the individuals with an invalid fitness
-    #     invalid_ind = [ind for ind in population if not ind.fitness.valid]
-    #     fitnesses = map(toolbox.evaluate, invalid_ind)
-    #     for ind, fit in zip(invalid_ind, fitnesses):
-    #         ind.fitness.values = fit
-
+    # run for NGEN number of generations
     for g in range(NGEN):
         # Select the next generation individuals
-        offspring = toolbox.select(population, len(population))
-        # Clone the selected individuals
-        offspring = map(toolbox.clone, offspring)
-        # print "offspring:\n", offspring
+        # offspring = toolbox.select(population, len(population))
+        # # Clone the selected individuals
+        # offspring = map(toolbox.clone, offspring)
+        # # print "offspring:\n", offspring
 
-        # Apply crossover and mutation on the offspring
-        for child1, child2 in zip(offspring[::2], offspring[1::2]):
-            if random.random() < CXPB:
-                toolbox.mate(child1, child2)
-                del child1.fitness.values
-                del child2.fitness.values
+        # subdivide population for genetic cross
+        sub_pop_one = population[0][::2]  # get every second item of population
+        sub_pop_two = population[0][1::2]
 
-        for mutant in offspring:
-            if random.random() < MUTPB:
-                toolbox.mutate(mutant)
-                del mutant.fitness.values
+        # apply crossover
+        ga_population_crossed = genetic_cross(sub_pop_one, sub_pop_two)
+        # add last digit for neural net bias
+        ga_population_crossed[0].append(1)
+        # print "Genetic cross:\n", ga_population_crossed
+        # print "len genetic cross:", len(ga_population_crossed[0])
+
+        # time to mutate!
+        ga_population_mutated = mutate(ga_population_crossed)
+        # overwrite last digit for neural net bias
+        ga_population_mutated[-1][-1] = 1
+        # print "Mutated:\n", ga_population_mutated
+
+        # print "orig len", len(ga_population[0])
+        # print "mutated len", len(ga_population_mutated[0])
 
         # Evaluate the individuals with an invalid fitness
-        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+        invalid_ind = [ind for ind in population if not ind.fitness.valid]
         fitnesses = map(toolbox.evaluate, invalid_ind)
         for ind, fit in zip(invalid_ind, fitnesses):
             ind.fitness.values = fit
 
-        # The population is entirely replaced by the offspring
-        population[:] = offspring
-    print "pop at the end of gen algorithm:\n", pop
-
-    return population
-
+    return ga_population_mutated
 
 def main():
     # create initial population
