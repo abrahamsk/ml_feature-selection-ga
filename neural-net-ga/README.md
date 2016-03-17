@@ -9,7 +9,10 @@ Key files for running GA-modified neural net:
 neural-net-ga/
     genetic_algorithm.py  
     neural_net_ga.py  
-    experiment1_ga.py
+    experiment1_ga.py  
+    experiment1_non_ga.py  
+    input.py  
+    letter.py  
 ```  
 
 If you're curious, `experiment2.py` and `experiment3.py` follow a similar pattern to exp1 and can be modified in a similar fashion.  
