@@ -242,6 +242,7 @@ def train_and_test(num_epochs, ga_initial_pop):
     """
     epoch_increment = 0
 
+    # run genetic algorithm on initial population
     ga_pop = genetic_algorithm(ga_initial_pop)
 
     # get the number of features to use in feature subset selection
@@ -333,23 +334,25 @@ def train_and_test(num_epochs, ga_initial_pop):
         ############################################################
         ga_test_row = [] # build testing data
         ga_test_pop = ga_pop[:]
-        # print ga_test_pop
+        # print "ga_test_pop in train\n", ga_test_pop
         # print "TEST Building test set..."
         # print "len ga_test_pop", len(ga_test_pop)
-        # for row in X_test[0:num_rows]:
-        #     ga_test_row = [] # build training data
-        for i in xrange(len(ga_test_pop)):
-            for j in xrange(len(ga_test_pop[i])):
-                if ga_test_pop[i][j] == 1:
-                    ga_test_row.append(X_test[i][j])  # build feature subset
+        for row in X_test[0:num_rows]:
+            ga_test_row = [] # build training data
+            for i in xrange(len(ga_test_pop)):
+                for j in xrange(len(ga_test_pop[i])):
+                    if ga_test_pop[i][j] == 1:
+                        # ga_test_row.append(X_test[i][j])  # build feature subset
+                        ga_test_row.append(row[j])
         # print "TEST len of ga_test_row", len(ga_test_row)  # variable depending on number of 1s in pop
         # print "ga row", ga_test_row
         # build neural net test input using rows with only a limited number of features
-        ga_X_test.append(ga_test_row)
+            ga_X_test.append(ga_test_row)
+
         # print "---------------------"
         # print "ga_X", len(ga_X)
         # print "---------------------"
-        # print "ga_X_test", len(ga_X_test)
+        # print "ga_X_test", ga_X_test
         # print "---------------------"
 
 
