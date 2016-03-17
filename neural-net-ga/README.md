@@ -13,6 +13,7 @@ neural-net-ga/
     experiment1_non_ga.py  
     input.py  
     letter.py  
+    letter-recognition.data  
 ```  
 
 If you're curious, `experiment2.py` and `experiment3.py` follow a similar pattern to exp1 and can be modified in a similar fashion.  
