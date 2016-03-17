@@ -2,7 +2,7 @@
 test/*
 
 # PDF files
-*.pdf
+# *.pdf
 
 ### Python template
 # Byte-compiled / optimized / DLL files

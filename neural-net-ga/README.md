@@ -1,7 +1,6 @@
 # ml_neural-networks
 
 Experiments in using feature subset selection to improve neural net performance.  
-See: *Feature Subset Selection Using a Genetic Algorithm* (Yang, Honavar 1997)
 
 #### Running:
 Execute `experiment1_ga.py` from your IDE or command line of choice.  
@@ -24,3 +23,8 @@ I suspect `back_propagation(...)` is the culprit (I'm looking at you, momentum/d
 #### Dependencies
 All files mentioned in the `from/import/include ...` statements, especially:  
 deap, pyplot, numpy (and scikit is always fun)
+
+#### References
+This project was motivated by the work of Yang and Honavar (1997), and Mitchell (*Complexity: A Guided Tour*, 2009)
+Yang and Honavar's paper (*Feature Subset Selection Using a Genetic Algorithm*) is publicly available at http://lib.dr.iastate.edu/cs_techreports/156/  
+It has been included in this repo for ease of access to the curious.  Mitchell's work is available at a number of booksellers.
