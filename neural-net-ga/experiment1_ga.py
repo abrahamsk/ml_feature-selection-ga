@@ -225,7 +225,7 @@ def back_propagation(hidden_activations, output_activations, target, row, input_
 # 	4. At each output unit, determine the error E.
 # 	5. Run the back-propagation algorithm to update all weights in the network.
 #### Pass in GA population
-def train_and_test(num_epochs, ga_pop):
+def train_and_test(num_epochs, ga_initial_pop):
     """
     train_and_test() calls forward_propagation() and back_propagation()
     Run training examples through neural net to train for letter recognition
@@ -242,7 +242,7 @@ def train_and_test(num_epochs, ga_pop):
     """
     epoch_increment = 0
 
-    ga_pop = genetic_algorithm(ga_pop)
+    ga_pop = genetic_algorithm(ga_initial_pop)
 
     # get the number of features to use in feature subset selection
     # by finding the number of 1s in the ga_pop
