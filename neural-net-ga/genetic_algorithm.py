@@ -189,19 +189,43 @@ def gen_algorithm(pop_size):
 # Non-library GA functions
 ##########################
 
+##################################
+# Feature subset selection strings
+##################################
+
 def genetic_cross(gen_pop_one, gen_pop_two):
     """
     Randomly combine from the two lists of genetic populations
     Note: "population" here refers to something that functions more like a chromosome
+    :param gen_pop_one:
+    :param gen_pop_two:
     :return crossed_population:
     """
-    combined_pop = []
+    # print "--------------------------------------------"
+    combined_pop = [[]]
+    pop_one = []
+    pop_two = []
     gene = []
-    for i, j in zip(gen_pop_one, gen_pop_two):
+
+    zipped = zip(gen_pop_one, gen_pop_two)
+    # print "zipped:\n",zipped
+
+    for i, j in zipped:
+        gene = []
         gene.append(i)
         gene.append(j)
-        combined_pop.append(random.choice(gene))
+        # print "gene in loop:\n", gene
+        pop_one.append(random.choice(gene))
+        pop_two.append(random.choice(gene))
 
+    # build combined population from genetic cross
+    for i in pop_one:
+        combined_pop[0].append(i)
+    for i in pop_two:
+        combined_pop[0].append(i)
+
+    # print "combined pop:\n", combined_pop
+    # print "--------------------------------------------"
     return combined_pop
 
 ###############################################################################
@@ -213,28 +237,121 @@ def mutate(gene):
     :param gene:
     :return:
     """
+    # print "--------------------------------------------"
+    # mutation options are 0 or 1
     options = [0,1]
-    for nucleotide in gene:
-        print "\nmutating?"
-        # if chance of mutation is greater than random, mutate a random spot in the gene
-        if random.random() < MUTPB:
-            print "mutating!"
-            # chose the spot that will mutate
-            mutation_location = random.randint(0, len(nucleotide)-1)
-            # choose new value from the options of 0 and 1
-            nucleotide[mutation_location] = random.choice(options)
-        else:
-            print "no mutation."
+    # count the number of times a mutation occurred
+    mutation_counter = 0
+
+    # select the number of mutations
+    num_mutations = random.randint(0, len(gene[0])-1)
+    # print "num mutations", num_mutations
+
+    # for each potential mutation, run random chance of mutation
+    # and mutate if MUTPB (mutation probability) is greater than random
+    for i in xrange(num_mutations):
+        for nucleotide in gene:
+            # print "mutating?"
+            # if chance of mutation is greater than random, mutate a random spot in the gene
+            if random.random() < MUTPB:
+                mutation_counter += 1
+                # print "mutating!"
+                # chose the spot that will mutate
+                mutation_location = random.randint(0, len(nucleotide)-1)
+                # print "len nucleotide", len(nucleotide)-1
+                # print "mutation location", mutation_location
+                # choose new value from the options of 0 and 1
+                # print "element before mutation", nucleotide[mutation_location]
+                mutation = random.choice(options)
+                # print "mutation", mutation
+                nucleotide[mutation_location] = mutation
+                # print "element after mutation", nucleotide[mutation_location]
+            # else:
+                # print "no mutation."
+    # print "number of mutations:", mutation_counter
+    # print "--------------------------------------------"
     return gene
 
 
 ###############################################################################
 
 
+def create_gen_population():
+    """
+    create initial genetic alg feature selection strings
+    :return ga_population, ga_population_deux:
+    """
+
+    ##############################################################
+    # GA Feature
+    # Population
+    # 16 features in row of X (neural net input) + 1 for bias
+    # use 17 for number of population in GA: pop will be dim 1x17
+    #############################################################
+    # ga_population = gen_algorithm(1)
+    ga_population = initial_ga_population(1)
+    # print "population before mod:", ga_population
+
+    # Overwrite last digit to be 1 so feature selection in
+    # neural net will always select bias input when building
+    # feature subset for GA-selected neural net input
+    # (GA selects features based on the presence of 1s in the GA population string)
+    # In the non-GA neural net input, X is the input:
+    # X has been concatenated with a column of 1s to use for bias input
+    ga_population[-1][-1] = 1
+    # print "population after bias input mod:\n", ga_population
+
+    return ga_population
+
+
+#######################################################################
+# Use a combo of DEAP and non-DEAP functions for crossover and mutation
+#######################################################################
+def genetic_algorithm(population):
+    """
+    Run genetic cross on parents and mutate offspring
+    Uses a mix of DEAP library and original functions
+    :param ga_population:
+    :param ga_population_deux:
+    :return:
+    """
+    # run for NGEN number of generations
+    for g in range(NGEN):
+        # Select the next generation individuals
+        # offspring = toolbox.select(population, len(population))
+        # # Clone the selected individuals
+        # offspring = map(toolbox.clone, offspring)
+        # # print "offspring:\n", offspring
+
+        # subdivide population for genetic cross
+        sub_pop_one = population[0][::2]  # get every second item of population
+        sub_pop_two = population[0][1::2]
+
+        # apply crossover
+        ga_population_crossed = genetic_cross(sub_pop_one, sub_pop_two)
+        # add last digit for neural net bias
+        ga_population_crossed[0].append(1)
+        # print "Genetic cross:\n", ga_population_crossed
+        # print "len genetic cross:", len(ga_population_crossed[0])
+
+        # time to mutate!
+        ga_population_mutated = mutate(ga_population_crossed)
+        # overwrite last digit for neural net bias
+        ga_population_mutated[-1][-1] = 1
+        # print "Mutated:\n", ga_population_mutated
+
+        # print "orig len", len(ga_population[0])
+        # print "mutated len", len(ga_population_mutated[0])
+
+    return ga_population_mutated
+
+
 def main():
-    test = 5
-    population = initial_ga_population(test)
-    print "test population len after function exit: ", len(population)
+    # create initial population
+    ga_population = create_gen_population()
+    # run genetic_cross() and mutate() on ga_population
+    ga_population = genetic_algorithm(ga_population)
+
 
 if __name__ == "__main__":
     main()

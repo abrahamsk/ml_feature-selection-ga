@@ -350,7 +350,9 @@ def genetic_algorithm(population):
 
 
 def main():
+    # create initial population
     ga_population = create_gen_population()
+    # run genetic_cross() and mutate() on ga_population
     ga_population = genetic_algorithm(ga_population)
 
 
