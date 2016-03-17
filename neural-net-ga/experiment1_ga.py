@@ -547,51 +547,51 @@ def main():
 
     #####################################################################################
 
-    # ####################
-    # # Using all features
-    # ####################
-    # # vars for tracking accuracies
-    # # reset values for neural net training
-    # improvements = []
-    # accuracy = 0
-    # prior_acc = 0
-    # avg_acc = 0
-    # accuracies_spanning_epochs = [[] for i in xrange(epochs)]
-    # print "*******************"
-    # print "Running neural net training & test with all features..."
-    # # run training for multiple rounds of epochs
-    # for i in xrange(rounds):
-    #     # rounds of epochs for more testing, getting averages over epochs
-    #     training_acc_list_all_features, testing_acc_list_all_features = train(epochs)
-    #     # training_acc_list_all_features, testing_acc_list_all_features = train_and_test(epochs, all_features)
-    #     print "\nTraining accuracy, testing accuracy:", training_acc_list_all_features, testing_acc_list_all_features
-    #
-    #     # plot results of accuracy testing
-    #     # plot_results(training_acc_list_all_features, testing_acc_list_all_features)
-    #
-    #     # get avg of accuracy across epochs
-    #     prior_acc = avg_acc
-    #     # avg_acc = np.mean(training_acc_list)
-    #     # store multiple epoch accuracies
-    #     accuracies_spanning_epochs[i].append(training_acc_list_all_features)
-    #     print "\n",i+1,"round(s) done."
-    # print "\nAll features run done."
-    # print "-------------------"
-    # # print "\nTraining accuracy, testing accuracy:", training_acc_list_all_features, testing_acc_list_all_features
-    # # calc grand mean for all rounds by averaging accuracies from epochs
-    # avg_acc_per_epoch = []
-    # for i in xrange(len(accuracies_spanning_epochs)):
-    #     avg_acc_per_epoch.append(np.mean(accuracies_spanning_epochs[i]))
-    # grand_mean_all_features = np.mean(avg_acc_per_epoch)
-    # # print "Average accuracy of non-GA neural net, across multiple rounds of epochs:", avg_acc
-    # print "Grand mean of neural net using entire feature string, across runs of epochs:", grand_mean_all_features
+    ####################
+    # Using all features
+    ####################
+    # vars for tracking accuracies
+    # reset values for neural net training
+    improvements = []
+    accuracy = 0
+    prior_acc = 0
+    avg_acc = 0
+    accuracies_spanning_epochs = [[] for i in xrange(epochs)]
+    print "*******************"
+    print "Running neural net training & test with all features..."
+    # run training for multiple rounds of epochs
+    for i in xrange(rounds):
+        # rounds of epochs for more testing, getting averages over epochs
+        training_acc_list_all_features, testing_acc_list_all_features = train(epochs)
+        # training_acc_list_all_features, testing_acc_list_all_features = train_and_test(epochs, all_features)
+        print "\nTraining accuracy, testing accuracy:", training_acc_list_all_features, testing_acc_list_all_features
 
+        # plot results of accuracy testing
+        # plot_results(training_acc_list_all_features, testing_acc_list_all_features)
+
+        # get avg of accuracy across epochs
+        prior_acc = avg_acc
+        # avg_acc = np.mean(training_acc_list)
+        # store multiple epoch accuracies
+        accuracies_spanning_epochs[i].append(training_acc_list_all_features)
+        print "\n",i+1,"round(s) done."
+    print "\nAll features run done."
+    print "-------------------"
+    # print "\nTraining accuracy, testing accuracy:", training_acc_list_all_features, testing_acc_list_all_features
+    # calc grand mean for all rounds by averaging accuracies from epochs
+    avg_acc_per_epoch = []
+    for i in xrange(len(accuracies_spanning_epochs)):
+        avg_acc_per_epoch.append(np.mean(accuracies_spanning_epochs[i]))
+    grand_mean_all_features = np.mean(avg_acc_per_epoch)
+    # print "Average accuracy of non-GA neural net, across multiple rounds of epochs:", avg_acc
+    print "Grand mean of neural net using entire feature string, across runs of epochs:", grand_mean_all_features
+    print "*******************"
     #####################################################################################
 
-    # #######################################################
-    # # Using initial GA population string for feature subset
-    # # GA population calculated in neural net file
-    # #######################################################
+    #######################################################
+    # Using initial GA population string for feature subset
+    # GA population calculated in neural net file
+    #######################################################
     # # vars for tracking accuracies
     # # reset values for neural net training
     # improvements[:] = []
@@ -599,7 +599,6 @@ def main():
     # prior_acc = 0
     # avg_acc = 0
     # accuracies_spanning_epochs[:] = [[] for i in xrange(epochs)]
-    # print "*******************"
     # print "Running neural net training & test with initial GA population..."
     # # create initial population
     # ga_population = create_gen_population()
@@ -689,6 +688,13 @@ def main():
     # print "  ____________________________________________"
     # print " | ", grand_mean_all_features,"      | ", grand_mean, "      | ", ga_grand_mean, "      | "
     # print " |______________|______________|______________|"
+
+    # all results
+    print "             ----- Grand Means -----"
+    print "  All features  | GA pop, mutated"
+    print "  _____________________________"
+    print " | ", grand_mean_all_features,"     | ", ga_grand_mean, "      | "
+    print " |______________|______________|"
 
 if __name__ == "__main__":
     main()
