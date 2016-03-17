@@ -130,6 +130,7 @@ def initial_ga_population(pop_size):
     pop = toolbox.population(n=pop_size)
     return pop
 
+
 ##########################
 # More verbose alternative
 ##########################
@@ -188,6 +189,7 @@ def gen_algorithm(pop_size):
 ##########################
 # Non-library GA functions
 ##########################
+
 
 ##################################
 # Feature subset selection strings
@@ -279,7 +281,7 @@ def mutate(gene):
 def create_gen_population():
     """
     create initial genetic alg feature selection strings
-    :return ga_population, ga_population_deux:
+    :return ga_population:
     """
 
     ##############################################################
@@ -315,6 +317,16 @@ def genetic_algorithm(population):
     :param ga_population_deux:
     :return:
     """
+    # need to create population here
+    # or fitness evaluation fails after the first genetic algorithm run-through
+    population = create_gen_population()
+    # print "population in genetic_algorithm:\n", type(population)
+    # Evaluate the entire population
+    fitnesses = map(toolbox.evaluate, population)
+    for ind, fit in zip(population, fitnesses):
+        # print "ind type:",type(ind)
+        ind.fitness.values = fit
+
     # run for NGEN number of generations
     for g in range(NGEN):
         # Select the next generation individuals
@@ -343,8 +355,13 @@ def genetic_algorithm(population):
         # print "orig len", len(ga_population[0])
         # print "mutated len", len(ga_population_mutated[0])
 
-    return ga_population_mutated
+        # Evaluate the individuals with an invalid fitness
+        invalid_ind = [ind for ind in population if not ind.fitness.valid]
+        fitnesses = map(toolbox.evaluate, invalid_ind)
+        for ind, fit in zip(invalid_ind, fitnesses):
+            ind.fitness.values = fit
 
+    return ga_population_mutated
 
 def main():
     # create initial population
