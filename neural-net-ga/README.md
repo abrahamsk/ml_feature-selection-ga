@@ -16,8 +16,7 @@ neural-net-ga/
     letter-recognition.data  
 ```  
 
-If you're curious, `experiment2.py` and `experiment3.py` follow a similar pattern to exp1 and can be modified in a similar fashion.  
-
+If you're curious, `experiment2.py` and `experiment3.py` follow a similar pattern to exp1 and can be modified in a similar fashion (they aren't edited to work with the GA algorithm as of 3/2016).  
 
 Buyer beware: there's a bug somewhere that comes up when getting test accuracy.  
 Also seems to affect accuracy across training for a high number of epochs.  
