@@ -601,7 +601,7 @@ def main():
     print "Grand mean (test) of neural net using entire feature string, across runs of epochs:", grand_mean_all_features_test
 
     # plot results of accuracy testing over multiple epochs
-    plot_results(avg_acc_training_per_epoch, avg_acc_test_per_epoch, 'Average accuracies, all features')
+    # plot_results(avg_acc_training_per_epoch, avg_acc_test_per_epoch, 'Average accuracies, all features')
 
     print "*******************"
 
@@ -670,7 +670,7 @@ def main():
     print "Grand mean (test) of neural net using GA feature selection, across runs of epochs:", ga_grand_mean_test
 
     # plot results of accuracy testing over multiple epochs
-    plot_results(ga_avg_acc_training_per_epoch, ga_avg_acc_test_per_epoch, 'Average accuracies, genetic algorithm feature subset')
+    # plot_results(ga_avg_acc_training_per_epoch, ga_avg_acc_test_per_epoch, 'Average accuracies, genetic algorithm feature subset')
 
     print "*******************"
 
@@ -686,6 +686,11 @@ def main():
     print "  _____________________________"
     print " | ", grand_mean_all_features_test,"     | ", ga_grand_mean_test, "      | "
     print " |______________|______________|"
+
+    # plot results
+    plot_results(avg_acc_training_per_epoch, avg_acc_test_per_epoch, 'Average accuracies, all features')
+    plot_results(ga_avg_acc_training_per_epoch, ga_avg_acc_test_per_epoch, 'Average accuracies, genetic algorithm feature subset')
+
 
 if __name__ == "__main__":
     main()
